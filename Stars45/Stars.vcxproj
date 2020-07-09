@@ -120,7 +120,7 @@
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfAtl>Static</UseOfAtl>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug VS2012|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -319,7 +319,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(SolutionDir)$(Configuration)\Starshatter_D.exe</OutputFile>
-      <AdditionalDependencies>..\Opcode\Debug\Opcode_D.lib;..\ngenex\debug\ngenex.lib;..\netex\debug\netex.lib;..\zlib\debug\zlib.lib;..\libpng\debug\libpng.lib;wsock32.lib;..\DirectX\lib\dinput.lib;dsound.lib;d3d9.lib;d3dx9.lib;dxguid.lib;winmm.lib;version.lib;ogg_static.lib;vorbis_static.lib;vorbisfile_static.lib;Vfw32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Opcode\Debug\Opcode_D.lib;..\ngenex\debug\ngenex.lib;..\netex\debug\netex.lib;..\zlib\debug\zlib.lib;..\libpng\debug\libpng.lib;wsock32.lib;..\DirectX\lib\dinput.lib;dsound.lib;d3d9.lib;d3dx9.lib;dxguid.lib;winmm.lib;version.lib;ogg_static.lib;vorbis_static.lib;vorbisfile_static.lib;Vfw32.lib;user32.lib;advapi32.lib;Gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)\lib\x86\;..\oggvorbis\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmt.lib;</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
