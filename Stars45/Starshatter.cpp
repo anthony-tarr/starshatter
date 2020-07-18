@@ -454,7 +454,7 @@ Starshatter::InitGame()
     mouse_input = new(__FILE__,__LINE__) MouseController;
     input->AddController(mouse_input);
 
-    ::Print("\nStarshatter::InitGame() create joystick\n");
+    Print("\nStarshatter::InitGame() create joystick\n");
     Joystick* j = new(__FILE__,__LINE__) Joystick;
     j->SetSensitivity(15, 5000);
     input->AddController(j);

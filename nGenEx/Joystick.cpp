@@ -44,6 +44,7 @@
 #define DIRECTINPUT_VERSION 0x0700
 
 #include <dinput.h>
+#include <string>
 
 #define JOY_POVUPRIGHT   4500
 #define JOY_POVDNRIGHT  13500
@@ -55,8 +56,8 @@
 
 const  int                    MAX_DEVICES = 8;
 
-static LPDIRECTINPUT7         pdi   = 0;
-static LPDIRECTINPUTDEVICE7   pdev  = 0;
+static LPDIRECTINPUT7         pDirectInput   = 0;
+static LPDIRECTINPUTDEVICE7   pDevice  = 0;
 static DIDEVICEINSTANCE       devices[MAX_DEVICES];
 static int                    ndev  = 0;
 static int                    idev  = -1;
@@ -106,23 +107,23 @@ Joystick::Joystick()
 
     if (MachineInfo::GetDirectXVersion() < MachineInfo::DX_7) {
         Print("Joystick: DI7 not found, using multimedia library\n");
-        pdi  = 0;
-        pdev = 0;
+        pDirectInput  = 0;
+        pDevice = 0;
     }
 
-    else if (!pdi) {
+    else if (!pDirectInput) {
         HRESULT hr = DirectInputCreateEx(Game::GetHINST(), 
         DIRECTINPUT_VERSION, 
         IID_IDirectInput7, 
-        (void**)&pdi,
+        (void**)&pDirectInput,
         NULL); 
         if FAILED(hr) { 
             DirectInputError("Failed to initialize DI7", hr);
-            pdi  = 0;
-            pdev = 0;
+            pDirectInput  = 0;
+            pDevice = 0;
         }
         else {
-            Print("Joystick: initialized DI7 pdi = %08x\n", (DWORD) pdi);
+            Print("Joystick: initialized DI7 pdi = %08x\n", (DWORD) pDirectInput);
         }
     }
 }
@@ -135,15 +136,15 @@ Joystick::~Joystick()
 
 void ReleaseDirectInput()
 {
-    if (pdev) {
-        pdev->Unacquire();
-        pdev->Release();
-        pdev = 0;
+    if (pDevice) {
+        pDevice->Unacquire();
+        pDevice->Release();
+        pDevice = 0;
     }
 
-    if (pdi) {
-        pdi->Release();
-        pdi = 0;
+    if (pDirectInput) {
+        pDirectInput->Release();
+        pDirectInput = 0;
     }
 }
 
@@ -256,49 +257,50 @@ BOOL FAR PASCAL EnumJoystick(LPCDIDEVICEINSTANCE pdinst, LPVOID pvSelect)
 
 bool CreateDevice(int select)
 {
-    if (!pdi || ndev < select)
-    return false;
+    Print("Joystick CreateDevice");
+    if (!pDirectInput || ndev < select) {
+        Print("Not creating device");
+        return false;
+    }
 
     LPCDIDEVICEINSTANCE pdinst = &devices[select-1];
 
-    ::Print("Joystick CreateDevice(%d)\n", select);
-    ::Print("   name:    %s\n\n",   pdinst->tszInstanceName);
+    Print("Joystick CreateDevice(%d)\n", select);
+    Print("   name:    %s\n\n",   pdinst->tszInstanceName);
 
     // release current device before trying to get another:
-    if (pdev) {
-        pdev->Unacquire();
-        pdev->Release();
-        pdev = 0;
+    if (pDevice) {
+        pDevice->Unacquire();
+        pDevice->Release();
+        pDevice = 0;
     }
 
     HRESULT hr = DI_OK;
-    // Create the DirectInput joystick device:
-    hr = pdi->CreateDeviceEx(pdinst->guidInstance, 
-    IID_IDirectInputDevice7, 
-    (void**)&pdev, 
-    NULL);
 
-    if (hr != DI_OK || pdev == 0) { 
+    // Create the DirectInput joystick device:
+    hr = pDirectInput->CreateDeviceEx(pdinst->guidInstance, IID_IDirectInputDevice7, (void**)&pDevice, NULL);
+
+    if (hr != DI_OK || pDevice == 0) { 
         DirectInputError("Create Device Ex failed", hr);
         return false; 
     }
 
     // Set the data format:
-    hr = pdev->SetDataFormat(&c_dfDIJoystick);
+    hr = pDevice->SetDataFormat(&c_dfDIJoystick);
 
     if (hr != DI_OK) {
         DirectInputError("Set Data Format failed", hr);
-        pdev->Release();
-        pdev = 0;
+        pDevice->Release();
+        pDevice = 0;
         return false;
     }
 
     // Set the coop level:
-    hr = pdev->SetCooperativeLevel(Game::GetHWND(), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
+    hr = pDevice->SetCooperativeLevel(Game::GetHWND(), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 
     if (hr != DI_OK) { 
         DirectInputError("Set Cooperative Level failed", hr); 
-        pdev->Release(); 
+        pDevice->Release(); 
         return false; 
     }
 
@@ -311,38 +313,37 @@ bool CreateDevice(int select)
     diprg.diph.dwHeaderSize = sizeof(diprg.diph);
     diprg.diph.dwObj        = DIJOFS_X;
     diprg.diph.dwHow        = DIPH_BYOFFSET;
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
     diprg.diph.dwObj        = DIJOFS_Y;
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
     diprg.diph.dwObj        = DIJOFS_Z;
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
     diprg.diph.dwObj        = DIJOFS_RX;
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
     diprg.diph.dwObj        = DIJOFS_RY;
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
     diprg.diph.dwObj        = DIJOFS_RZ;
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
     diprg.diph.dwObj        = DIJOFS_SLIDER(0);
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
     diprg.diph.dwObj        = DIJOFS_SLIDER(1);
-    pdev->SetProperty(DIPROP_RANGE, &diprg.diph);
+    pDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
 
-    ::Print("Created joystick %d (pdev = %08x)\n", select, (DWORD) pdev);
+    Print("Created joystick %d (pdev = %08x)\n", select, (DWORD) pDevice);
     idev = select;
     return true;
 }
 
-void
-Joystick::EnumerateDevices()
+void Joystick::EnumerateDevices()
 {
-    if (!pdi) {
+    if (!pDirectInput) {
         Print("Joystick: no DI7, unable to enumerate devices\n");
         ndev = 0;
     }
@@ -351,35 +352,28 @@ Joystick::EnumerateDevices()
         Print("Joystick: preparing to enumerate devices\n");
 
         ndev = 0;
-        HRESULT hr = 
-        pdi->EnumDevices(DIDEVTYPE_JOYSTICK,
-        EnumJoystick,
-        (LPVOID) 0, 
-        DIEDFL_ATTACHEDONLY);
+        HRESULT hr = pDirectInput -> EnumDevices(DIDEVTYPE_JOYSTICK, EnumJoystick, (LPVOID) 0, DIEDFL_ATTACHEDONLY);
 
         if (FAILED(hr)) {
             DirectInputError("Failed to enumerate devices", hr);
             ReleaseDirectInput();
-        }
-
-        else if (ndev < 1) {
+        } else if (ndev < 1) {
             Print("Joystick: no devices found\n");
             ReleaseDirectInput();
         }
     }
 }
 
-int
-Joystick::NumDevices()
+int Joystick::NumDevices()
 {
     return ndev;
 }
 
-const char*
-Joystick::GetDeviceName(int i)
+const char* Joystick::GetDeviceName(int i)
 {
-    if (i >= 0 && i < ndev)
-    return devices[i].tszInstanceName;
+    if (i >= 0 && i < ndev) {
+        return devices[i].tszInstanceName;
+    }
 
     return 0;
 }
@@ -389,48 +383,48 @@ Joystick::GetDeviceName(int i)
 static DIJOYSTATE joystate;
 static JOYINFOEX  joyinfo;
 
-int
-Joystick::ReadRawAxis(int a)
+int Joystick::ReadRawAxis(int a)
 {
-    if (!joystick)
-    return 0;
+    if (!joystick) { 
+        return 0; 
+    }
 
     int result = 0;
 
-    if (pdev) {
+    // Print("%d\n", a);
+
+    if (pDevice) {
         switch (a) {
-        case KEY_JOY_AXIS_X:    result = joystate.lX;            break;
-        case KEY_JOY_AXIS_Y:    result = joystate.lY;            break;
-        case KEY_JOY_AXIS_Z:    result = joystate.lZ;            break;
-        case KEY_JOY_AXIS_RX:   result = joystate.lRx;           break;
-        case KEY_JOY_AXIS_RY:   result = joystate.lRy;           break;
-        case KEY_JOY_AXIS_RZ:   result = joystate.lRz;           break;
-        case KEY_JOY_AXIS_S0:   result = joystate.rglSlider[0];  break;
-        case KEY_JOY_AXIS_S1:   result = joystate.rglSlider[1];  break;
+            case KEY_JOY_AXIS_X:    result = joystate.lX;            break;
+            case KEY_JOY_AXIS_Y:    result = joystate.lY;            break;
+            case KEY_JOY_AXIS_Z:    result = joystate.lZ;            break;
+            case KEY_JOY_AXIS_RX:   result = joystate.lRx;           break;
+            case KEY_JOY_AXIS_RY:   result = joystate.lRy;           break;
+            case KEY_JOY_AXIS_RZ:   result = joystate.lRz;           break;
+            case KEY_JOY_AXIS_S0:   result = joystate.rglSlider[0];  break;
+            case KEY_JOY_AXIS_S1:   result = joystate.rglSlider[1];  break;
         }
-    }
-
-    else {
+    } else {
         switch (a) {
-        case KEY_JOY_AXIS_X:
-            if (joyinfo.dwFlags & JOY_RETURNX)
-            result = joyinfo.dwXpos;
-            break;
+            case KEY_JOY_AXIS_X:
+                if (joyinfo.dwFlags & JOY_RETURNX)
+                result = joyinfo.dwXpos;
+                break;
 
-        case KEY_JOY_AXIS_Y:
-            if (joyinfo.dwFlags & JOY_RETURNY)
-            result = joyinfo.dwYpos;
-            break;
+            case KEY_JOY_AXIS_Y:
+                if (joyinfo.dwFlags & JOY_RETURNY)
+                result = joyinfo.dwYpos;
+                break;
 
-        case KEY_JOY_AXIS_Z:
-            if (joyinfo.dwFlags & JOY_RETURNZ)
-            result = joyinfo.dwZpos;
-            break;
+            case KEY_JOY_AXIS_Z:
+                if (joyinfo.dwFlags & JOY_RETURNZ)
+                result = joyinfo.dwZpos;
+                break;
 
-        case KEY_JOY_AXIS_RZ:
-            if (joyinfo.dwFlags & JOY_RETURNR)
-            result = joyinfo.dwRpos;
-            break;
+            case KEY_JOY_AXIS_RZ:
+                if (joyinfo.dwFlags & JOY_RETURNR)
+                result = joyinfo.dwRpos;
+                break;
         }
     }
 
@@ -439,21 +433,23 @@ Joystick::ReadRawAxis(int a)
 
 double
 Joystick::ReadAxisDI(int a)
-{
-    if (a < 0 || a > 3)
-    return 0;
+{   
+    // PrintLine("ReadAxisDI\n");
+    if (a < 0 || a > 3) {
+        return 0;
+    }
 
     double result = 0;
 
     switch (map_axis[a]) {
-    case KEY_JOY_AXIS_X:    result = joystate.lX;            break;
-    case KEY_JOY_AXIS_Y:    result = joystate.lY;            break;
-    case KEY_JOY_AXIS_Z:    result = joystate.lZ;            break;
-    case KEY_JOY_AXIS_RX:   result = joystate.lRx;           break;
-    case KEY_JOY_AXIS_RY:   result = joystate.lRy;           break;
-    case KEY_JOY_AXIS_RZ:   result = joystate.lRz;           break;
-    case KEY_JOY_AXIS_S0:   result = joystate.rglSlider[0];  break;
-    case KEY_JOY_AXIS_S1:   result = joystate.rglSlider[1];  break;
+        case KEY_JOY_AXIS_X:    result = joystate.lX;            break;
+        case KEY_JOY_AXIS_Y:    result = joystate.lY;            break;
+        case KEY_JOY_AXIS_Z:    result = joystate.lZ;            break;
+        case KEY_JOY_AXIS_RX:   result = joystate.lRx;           break;
+        case KEY_JOY_AXIS_RY:   result = joystate.lRy;           break;
+        case KEY_JOY_AXIS_RZ:   result = joystate.lRz;           break;
+        case KEY_JOY_AXIS_S0:   result = joystate.rglSlider[0];  break;
+        case KEY_JOY_AXIS_S1:   result = joystate.rglSlider[1];  break;
     }
 
     if (a < 3) {
@@ -483,8 +479,7 @@ Joystick::ReadAxisDI(int a)
     return result;
 }
 
-double
-Joystick::ReadAxisMM(int a)
+double Joystick::ReadAxisMM(int a)
 {
     if (a < 0 || a > 3)
     return 0;
@@ -541,8 +536,7 @@ Joystick::ReadAxisMM(int a)
 
 // +--------------------------------------------------------------------+
 
-void
-Joystick::Acquire()
+void Joystick::Acquire()
 {
     t = x = y = z = p = r = w = 0;
     for (int i = 0; i < MotionController::MaxActions; i++)
@@ -552,8 +546,9 @@ Joystick::Acquire()
     for (int j = 0; j < 4; j++)
     hat[i][j] = false;
 
-    if (select == 0)
-    return;
+    if (select == 0) {
+        return; 
+    }
 
     //============================================================
     // 
@@ -561,26 +556,29 @@ Joystick::Acquire()
 
     bool acquired = false;
 
-    if (pdi) {
+    if (pDirectInput) {
         if (idev != select) {
-            if (ndev < 1)
-            EnumerateDevices();
+            if (ndev < 1) {
+                EnumerateDevices();
+            }
 
-            if (CreateDevice(select) && pdev)
-            pdev->Acquire();
+            if (CreateDevice(select) && pDevice) {
+                pDevice -> Acquire();
+            }
         }
 
-        if (pdev) {
+        if (pDevice) {
+            //Print("pDevice exists");
             HRESULT     hr = 0;
 
-            hr = pdev->Poll();
-            hr = pdev->GetDeviceState(sizeof(joystate), &joystate);
+            hr = pDevice->Poll();
+            hr = pDevice->GetDeviceState(sizeof(joystate), &joystate);
 
             if (hr == DIERR_INPUTLOST) {
-                pdev->Acquire();
+                pDevice -> Acquire();
 
-                hr = pdev->Poll();
-                hr = pdev->GetDeviceState(sizeof(joystate), &joystate);
+                hr = pDevice->Poll();
+                hr = pDevice->GetDeviceState(sizeof(joystate), &joystate);
 
                 if (FAILED(hr)) {
                     strikes--;

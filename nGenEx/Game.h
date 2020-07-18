@@ -42,6 +42,7 @@
 // +--------------------------------------------------------------------+
 
 void              Print(const char* fmt, ...);
+void              PrintLine(const char* fmt, ...);
 
 LRESULT CALLBACK  WndProc(HWND, UINT, WPARAM, LPARAM);
 

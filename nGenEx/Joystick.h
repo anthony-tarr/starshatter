@@ -55,7 +55,7 @@ public:
     virtual void   MapKeys(KeyMapEntry* mapping, int nkeys);
 
     // sample the physical device
-    virtual void   Acquire();
+    virtual void Acquire();
 
     // translations
     virtual double X()         { return x; }

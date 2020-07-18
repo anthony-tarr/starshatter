@@ -433,7 +433,7 @@ int  ComboBox::GetCount()
     return items.size();
 }
 
-const char*  ComboBox::GetSelectedItem()
+const char* ComboBox::GetSelectedItem()
 {
     if (seln >= 0 && seln < items.size())
     return items[seln]->data();
@@ -441,12 +441,13 @@ const char*  ComboBox::GetSelectedItem()
     return 0;
 }
 
-int  ComboBox::GetSelectedIndex()
+int ComboBox::GetSelectedIndex()
 {
-    if (seln >= 0 && seln < items.size())
-    return seln;
-    else
-    return -1;
+    if (seln >= 0 && seln < items.size()) {
+        return seln;
+    } else {
+        return -1;
+    }
 }
 
 void ComboBox::SetSelection(int index)

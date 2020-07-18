@@ -1553,6 +1553,16 @@ void Print(const char* fmt, ...)
     }
 }
 
+void PrintLine(const char* fmt, ...)
+{
+    if (ErrLog) {
+        vsprintf_s(ErrBuf, fmt, (char*)(&fmt + 1));
+
+        fprintf(ErrLog, "%c\n", ErrBuf);
+        fflush(ErrLog);
+    }
+}
+
 // +====================================================================+
 
 DWORD GetRealTime()

@@ -371,10 +371,9 @@ CtlDlg::OnControlModel(AWEvent* event)
 
 // +--------------------------------------------------------------------+
 
-void
-CtlDlg::OnJoySelect(AWEvent* event)
+void CtlDlg::OnJoySelect(AWEvent* event)
 {
-    joy_select = joy_select_combo->GetSelectedIndex();
+    joy_select = joy_select_combo -> GetSelectedIndex();
 }
 
 void
