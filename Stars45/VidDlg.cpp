@@ -357,6 +357,10 @@ VidDlg::Apply()
         w = 1600;
         h = 1200;
     }
+    else if (strstr(mode_desc, "1920 x 1080")) {
+        w = 1920;
+        h = 1080;
+    }
 
     if (strstr(mode_desc, "x 16"))
     d = 16;
@@ -498,7 +502,11 @@ VidDlg::BuildModeList()
     if (Game::DisplayModeSupported(1600,1200, 32))  mode->AddItem("1600 x 1200 x 32");
 
     if (Game::DisplayModeSupported(1680,1050, 16))  mode->AddItem("1680 x 1050 x 16");
-    if (Game::DisplayModeSupported(1680,1050, 32))  mode->AddItem("1680 x 1050 x 32");
+    if (Game::DisplayModeSupported(1680,1050, 32))  mode->AddItem("1680 x 1050 x 32");    
+
+    //  16-bit probably isn't worth adding
+    // if (Game::DisplayModeSupported(1920, 1080, 16))  mode->AddItem("1680 x 1050 x 32");
+    if (Game::DisplayModeSupported(1920, 1080, 32))  mode->AddItem("1920 x 1080 x 32");
 
     Video* video = Game::GetVideo();
 
@@ -523,6 +531,7 @@ VidDlg::BuildModeList()
             else
             strcpy_s(mode_desc, "1600 x 1200 x ");
             break;
+        case 1920:  strcpy_s(mode_desc, "1920 x 1080 x ");   break;
         }
 
         switch (video->Depth()) {

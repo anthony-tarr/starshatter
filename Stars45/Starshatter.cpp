@@ -2618,10 +2618,11 @@ Starshatter::LoadVideoConfig(const char* filename)
         video_settings->fullscreen_mode.width  = screen_width;
         video_settings->fullscreen_mode.height = screen_height;
 
-        if (screen_depth == 16)
-        video_settings->fullscreen_mode.format = VideoMode::FMT_R5G6B5;
-        else
-        video_settings->fullscreen_mode.format = VideoMode::FMT_X8R8G8B8;
+        if (screen_depth == 16) {
+            video_settings->fullscreen_mode.format = VideoMode::FMT_R5G6B5;
+        } else {
+            video_settings->fullscreen_mode.format = VideoMode::FMT_X8R8G8B8;
+        }
 
         video_settings->shadows    = shadows_enabled;
         video_settings->specmaps   = spec_maps_enabled;
