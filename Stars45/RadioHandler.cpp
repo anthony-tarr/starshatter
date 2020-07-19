@@ -56,6 +56,11 @@
 #include "FlightDeck.h"
 #include "WeaponGroup.h"
 #include "SteerAI.h"
+#include "CarrierAI.h"
+#include "TacticalAI.h"
+#include "SeekerAI.h"
+#include "StarshipTacticalAI.h"
+#include "ShipAI.h"
 
 #include "Text.h"
 #include "Game.h"
@@ -523,12 +528,26 @@ RadioHandler::Support(RadioMessage* msg, Ship* ship)
     // try to find some fighters with time on their hands...
     Element*    help = 0;
     Element*    cmdr = ship->GetElement();
-    Element*    baby = msg->Sender()->GetElement();
-    SimRegion*  rgn  = msg->Sender()->GetRegion();
+	Element*    baby = msg->Sender()->GetElement();
+	SimRegion*  rgn  = msg->Sender()->GetRegion();	
 
-    for (int i = 0; i < rgn->Ships().size(); i++) {
-        Ship*    s = rgn->Ships().at(i);
-        Element* e = s->GetElement();
+	//** if caller comes from a carrier, check for deployed fighters first
+	if(baby->GetCarrier() == ship) {
+		Director*	dir = ship->GetDirector();
+		CarrierAI*	CV	= ((ShipAI*) dir)->GetTactical()->GetCarrierAI();
+
+
+		if(CV) {
+			if( !CV->g1.assigned) {
+			help = CV->g1.id;
+			CV->g1.assigned = true;
+			}
+		}	
+	}
+
+	else for (int i = 0; i < rgn->Ships().size(); i++) {
+		Ship*    s = rgn->Ships().at(i);
+		Element* e = s->GetElement();
 
         if (e && s->IsDropship()               &&
                 e->Type() == Mission::PATROL  &&

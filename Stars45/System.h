@@ -59,12 +59,12 @@ class System
     friend Component;
 
 public:
-    static const char* TYPENAME() { return "System"; }
+	static const char* TYPENAME() { return "System"; }
 
-    enum CATEGORY    { MISC_SYSTEM=0, DRIVE=1, WEAPON, SHIELD, SENSOR,
-        COMPUTER, POWER_SOURCE, FLIGHT_DECK, FARCASTER };
-    enum STATUS      { DESTROYED, CRITICAL, DEGRADED, NOMINAL, MAINT };
-    enum POWER_FLAGS { POWER_WATTS=1, POWER_CRITICAL=2 };
+	enum CATEGORY    { MISC_SYSTEM=0, DRIVE=1, WEAPON, SHIELD, SENSOR,
+		COMPUTER, POWER_SOURCE, FLIGHT_DECK, FARCASTER, PILOT };
+	enum STATUS      { DESTROYED, CRITICAL, DEGRADED, NOMINAL, MAINT };
+	enum POWER_FLAGS { POWER_WATTS=1, POWER_CRITICAL=2 };
 
     System(CATEGORY t, int s, const char* n, int maxv,
     double energy=0, double capacity=100, double sink_rate=1);

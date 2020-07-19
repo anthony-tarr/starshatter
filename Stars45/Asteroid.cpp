@@ -73,41 +73,41 @@ Asteroid::Initialize()
 
     int n = 0;
 
-    Model* a = new(__FILE__,__LINE__) Model;
-    if (a) {
-        a->Load("a1.mag", 100);
-        asteroid_model[n++] = a;
-    }
+	Model* a = new(__FILE__,__LINE__) Model;
+	if (a) {
+		a->Load("a1.mag", 50);	//100
+		asteroid_model[n++] = a;
+	}
 
-    a = new(__FILE__,__LINE__) Model;
-    if (a) {
-        a->Load("a2.mag", 50);
-        asteroid_model[n++] = a;
-    }
+	a = new(__FILE__,__LINE__) Model;
+	if (a) {
+		a->Load("a2.mag", 25); //50
+		asteroid_model[n++] = a;
+	}
 
-    a = new(__FILE__,__LINE__) Model;
-    if (a) {
-        a->Load("a1.mag",  8);
-        asteroid_model[n++] = a;
-    }
+	a = new(__FILE__,__LINE__) Model;
+	if (a) {
+		a->Load("a1.mag",  5);	//8
+		asteroid_model[n++] = a;
+	}
 
-    a = new(__FILE__,__LINE__) Model;
-    if (a) {
-        a->Load("a2.mag", 10);
-        asteroid_model[n++] = a;
-    }
+	a = new(__FILE__,__LINE__) Model;
+	if (a) {
+		a->Load("a2.mag", 6);	//10
+		asteroid_model[n++] = a;
+	}
 
-    a = new(__FILE__,__LINE__) Model;
-    if (a) {
-        a->Load("a3.mag", 30);
-        asteroid_model[n++] = a;
-    }
+	a = new(__FILE__,__LINE__) Model;
+	if (a) {
+		a->Load("a3.mag", 2);	//30
+		asteroid_model[n++] = a;
+	}
 
-    a = new(__FILE__,__LINE__) Model;
-    if (a) {
-        a->Load("a4.mag", 20);
-        asteroid_model[n++] = a;
-    }
+	a = new(__FILE__,__LINE__) Model;
+	if (a) {
+		a->Load("a4.mag", 1);	//20
+		asteroid_model[n++] = a;
+	}
 
     List<Text> mod_asteroids;
     loader->SetDataPath("Mods/Galaxy/Asteroids/");

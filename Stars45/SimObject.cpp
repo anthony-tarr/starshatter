@@ -31,9 +31,9 @@
     AUTHOR:       John DiCamillo
 
 
-    OVERVIEW
-    ========
-    Simulation Object and Observer classes
+	OVERVIEW
+	========
+	Simulation Object and Observer classes
 */
 
 #include "MemDebug.h"
@@ -47,53 +47,53 @@
 
 SimObserver::~SimObserver()
 {
-    ListIter<SimObject> observed = observe_list;
-    while (++observed)
-    observed->Unregister(this);
+	ListIter<SimObject> observed = observe_list;
+	while (++observed)
+	observed->Unregister(this);
 }
 
 void
-SimObserver::Observe(SimObject* obj)
+SimObserver::Observe(SimObject* obj)		//Adds object to observe list
 {
-    if (obj) {
-        obj->Register(this);
+	if (obj) {
+		obj->Register(this);
 
-        if (!observe_list.contains(obj))
-        observe_list.append(obj);
-    }
+		if (!observe_list.contains(obj))
+		observe_list.append(obj);
+	}
 }
 
 void
-SimObserver::Ignore(SimObject* obj)
+SimObserver::Ignore(SimObject* obj)		//Removes object from observe list AND unregisters
 {
-    if (obj) {
-        obj->Unregister(this);
-        observe_list.remove(obj);
-    }
+	if (obj) {
+		obj->Unregister(this);
+		observe_list.remove(obj);
+	}
 }
 
 bool
-SimObserver::Update(SimObject* obj)
+SimObserver::Update(SimObject* obj)		//Removes object from observe list
 {
-    if (obj)
-    observe_list.remove(obj);
+	if (obj)
+	observe_list.remove(obj);
 
-    return true;
+	return true;
 }
 
 const char*
 SimObserver::GetObserverName() const
 {
-    static char name[32];
-    sprintf_s(name, "SimObserver 0x%08x", (DWORD) this);
-    return name;
+	static char name[32];
+	sprintf_s(name, "SimObserver 0x%08x", (DWORD) this);
+	return name;
 }
 
 // +--------------------------------------------------------------------+
 
 SimObject::~SimObject()
 {
-    Notify();
+	Notify();
 }
 
 // +--------------------------------------------------------------------+
@@ -101,33 +101,33 @@ SimObject::~SimObject()
 void
 SimObject::Notify()
 {
-    if (!notifying) {
-        notifying = true;
+	if (!notifying) {
+		notifying = true;
 
-        int nobservers = observers.size();
-        int nupdate    = 0;
+		int nobservers = observers.size();
+		int nupdate    = 0;
 
-        if (nobservers > 0) {
-            ListIter<SimObserver> iter = observers;
-            while (++iter) {
-                SimObserver* observer = iter.value();
-                observer->Update(this);
-                nupdate++;
-            }
+		if (nobservers > 0) {
+			ListIter<SimObserver> iter = observers;
+			while (++iter) {
+				SimObserver* observer = iter.value();
+				observer->Update(this);
+				nupdate++;
+			}
 
-            observers.clear();
-        }
+			observers.clear();
+		}
 
-        if (nobservers != nupdate) {
-            ::Print("WARNING: incomplete notify sim object '%s' - %d of %d notified\n",
-            Name(), nupdate, nobservers);
-        }
+		if (nobservers != nupdate) {
+			::Print("WARNING: incomplete notify sim object '%s' - %d of %d notified\n",
+			Name(), nupdate, nobservers);
+		}
 
-        notifying = false;
-    }
-    else {
-        ::Print("WARNING: double notify on sim object '%s'\n", Name());
-    }
+		notifying = false;
+	}
+	else {
+		::Print("WARNING: double notify on sim object '%s'\n", Name());
+	}
 }
 
 // +--------------------------------------------------------------------+
@@ -135,8 +135,8 @@ SimObject::Notify()
 void
 SimObject::Register(SimObserver* observer)
 {
-    if (!notifying && !observers.contains(observer))
-    observers.append(observer);
+	if (!notifying && !observers.contains(observer))
+	observers.append(observer);
 }
 
 // +--------------------------------------------------------------------+
@@ -144,8 +144,8 @@ SimObject::Register(SimObserver* observer)
 void
 SimObject::Unregister(SimObserver* observer)
 {
-    if (!notifying)
-    observers.remove(observer);
+	if (!notifying)
+	observers.remove(observer);
 }
 
 // +--------------------------------------------------------------------+
@@ -153,22 +153,22 @@ SimObject::Unregister(SimObserver* observer)
 void
 SimObject::Activate(Scene& scene)
 {
-    if (rep)
-    scene.AddGraphic(rep);
-    if (light)
-    scene.AddLight(light);
+	if (rep)
+	scene.AddGraphic(rep);
+	if (light)
+	scene.AddLight(light);
 
-    active = true;
+	active = true;
 }
 
 void
 SimObject::Deactivate(Scene& scene)
 {
-    if (rep)
-    scene.DelGraphic(rep);
-    if (light)
-    scene.DelLight(light);
+	if (rep)
+	scene.DelGraphic(rep);
+	if (light)
+	scene.DelLight(light);
 
-    active = false;
+	active = false;
 }
 

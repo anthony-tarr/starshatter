@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -618,6 +618,21 @@
     <ClCompile Include="WepView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AudDlg.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pilot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\nGenEx\PilotRep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CanopyRep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShipGraveyard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Stars.rc">
@@ -1109,6 +1124,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WepView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pilot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\nGenEx\PilotRep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CanopyRep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShipGraveyard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

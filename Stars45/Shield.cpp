@@ -40,6 +40,8 @@
 #include "Shield.h"
 #include "Shot.h"
 #include "WeaponDesign.h"
+#include "System.h"
+#include "Ship.h"
 
 #include "Game.h"
 
@@ -100,14 +102,15 @@ Shield::Shield(const Shield& s)
 : System(s), shield_factor(s.shield_factor), requested_power_level(0.0f),
 shield_cutoff(s.shield_cutoff), shield_capacitor(s.shield_capacitor),
 shield_bubble(s.shield_bubble), deflection_cost(s.deflection_cost),
-shield_curve(s.shield_curve)
+shield_curve(s.shield_curve),stress_level(s.stress_level)
 {
-    power_flags  = s.power_flags;
-    energy       = 0.0f;
-    power_level  = 0.0f;
-    shield_level = 0.0f;
+	power_flags  = s.power_flags;
+	energy       = 0.0f;
+	power_level  = 0.0f;
+	shield_level = 0.0f;
+	stress_level = 1.0f;          //**** counter init
 
-    Mount(s);
+	Mount(s);
 }
 
 // +--------------------------------------------------------------------+
@@ -151,9 +154,11 @@ Shield::ExecFrame(double seconds)
     }
 
     if (power_level < 0.01 && !shield_capacitor) {
-        shield_level = 0.0f;
-        energy       = 0.0f;
-    }
+		shield_level = 0.0f;
+		energy       = 0.0f;
+	}
+	if (stress_level > 1)
+		stress_level -= seconds * (capacity/pow(capacity,(float) 0.615) );            //**** Stress cool down, increases with capacity
 }
 
 // +----------------------------------------------------------------------+
@@ -161,11 +166,12 @@ Shield::ExecFrame(double seconds)
 void
 Shield::Distribute(double delivered_energy, double seconds)
 {
-    System::Distribute(delivered_energy, seconds);
 
-    if (shield_capacitor) {
-        if (shield_cutoff > 0 && shield_cutoff < 0.999) {
-            float cutoff = shield_cutoff * capacity;
+	System::Distribute(delivered_energy * availability, seconds);      //***** Shield recharge modified by system damage!!!!!!
+
+	if (shield_capacitor) {
+		if (shield_cutoff > 0 && shield_cutoff < 0.999) {
+			float cutoff = shield_cutoff * capacity;
 
             if (energy > cutoff)
             shield_level = (energy-cutoff)/(capacity-cutoff);
@@ -191,14 +197,21 @@ Shield::Distribute(double delivered_energy, double seconds)
 double
 Shield::DeflectDamage(Shot* shot, double damage)
 {
-    double filter      = 1;
-    double penetration = 5;
-    double leak        = 0;
+	double filter      = 1;
+	double penetration = 5;
+	double leak        = 0;
+	double stress	   = 5;              //**** stress damage
+	float  Sdamage	   = 0;         	//****shield damage
 
-    if (shot)
-    penetration = shot->Design()->penetration;
+	if (shot) {
+	penetration = shot->Design()->penetration;
+	Sdamage		= shot->Design()->shield_dmg;
+	}
+	if (Sdamage == 0) 
+		Sdamage = damage;
+	
 
-    filter = 1 - shield_factor * penetration;
+	filter = 1 - shield_factor * penetration;
 
     if (filter < 0)
     filter = 0;
@@ -209,20 +222,24 @@ Shield::DeflectDamage(Shot* shot, double damage)
     if (shield_capacitor) {
         if (shield_cutoff > 0 && shield_level < 1e-6) {
             leak = damage;
-            energy -= (float) (damage * deflection_cost);
-        }
+			energy -= (float) (damage * deflection_cost);
+		}
 
-        else {
-            leak = damage * (1 - pow(shield_level, shield_curve) * filter * availability);
+		else {																			  //*** Whole leak thingy disabled.
+			double deflected = Sdamage - (2 * pow(Sdamage,shield_factor));   //***** Shield damage takes control of damage to shields.
 
-            double deflected = damage - leak;
-            energy -= (float) deflected * deflection_cost;
-        }
+			stress_level += deflected - (deflected * shield_factor);		//***** Shield stress handling and resolution.
+				if (stress_level > capacity * 2)  {								//***** More shield factor means slower stress build up.
+					ApplyDamage(stress * stress_level/(capacity*4) );			//***** shield overkill causes increased proportional damage to system.
+					stress_level = 1;
+				}			
+			energy -= (float) (deflected * deflection_cost);
+		}
+	}
 
-    }
-    else {
-        leak = damage * (1 - pow(shield_level, shield_curve) * filter * availability);
-    }
+	else {
+		leak = damage * (1 - pow(shield_level, shield_curve) * filter * availability);
+	}
 
     return leak;
 }
@@ -279,5 +296,22 @@ Shield::DoEMCON(int index)
         }
     }
 
-    emcon = index;
+	emcon = index;
+}
+
+//********* Function calculates the shield level were incoming shot should pierce shields entirely.
+//          Main factors are shot penetration vs shield factor.
+double
+Shield::Piercing(Shot* shot)
+{
+	float	pr		= 0;
+
+	float 	pen		= shot->Design()->penetration;
+	float  pierce	= pen/10;
+
+	pr =  100 * (1- pow(shield_factor,pierce));
+	if (pr < 5)
+		pr = 5;
+
+	return pr;
 }

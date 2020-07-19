@@ -125,12 +125,14 @@ public:
     SimRegion*        Region()          const { return region;     }
     Point             Location()        const;
     RLoc&             GetRLoc()               { return rloc;       }
-    int               Action()          const { return action;     }
-    int               Status()          const { return status;     }
-    int               Formation()       const { return formation;  }
-    int               Speed()           const { return speed;      }
-    int               EMCON()           const { return emcon;      }
-    int               WeaponsFree()     const { return wep_free;   }
+	int               Action()          const { return action;     }
+	int               Status()          const { return status;     }
+	int               Formation()       const { return formation;  }
+	int				  Offset()		    const { return offsets;	   }	//** offsets
+	Point	          OffsetPos()	    const { return offset_pos; }
+	int               Speed()           const { return speed;      }
+	int               EMCON()           const { return emcon;      }
+	int               WeaponsFree()     const { return wep_free;   }
     int               Priority()        const { return priority;   }
     int               Farcast()         const { return farcast;    }
     double            HoldTime()        const { return hold_time;  }
@@ -146,12 +148,14 @@ public:
     // mutators:
     void              SetRegion(SimRegion* r)       { region    = r;  }
     void              SetLocation(const Point& l);
-    void              SetAction(int s)              { action    = s;  }
-    void              SetStatus(int s);
-    void              SetFormation(int s)           { formation = s;  }
-    void              SetSpeed(int s)               { speed     = s;  }
-    void              SetEMCON(int e)               { emcon     = e;  }
-    void              SetWeaponsFree(int f)         { wep_free  = f;  }
+	void              SetAction(int s)              { action    = s;  }
+	void              SetStatus(int s);
+	void              SetFormation(int s)           { formation = s;  }
+	void			  SetOffset(int o)				{ offsets	= o;  }		//**offsets
+	void			  SetOffsetPos(Point p)		    { offset_pos = p; }
+	void              SetSpeed(int s)               { speed     = s;  }	
+	void              SetEMCON(int e)               { emcon     = e;  }
+	void              SetWeaponsFree(int f)         { wep_free  = f;  }
     void              SetPriority(int p)            { priority  = p;  }
     void              SetFarcast(int f)             { farcast   = f;  }
     void              SetHoldTime(double t)         { hold_time = t;  }
@@ -167,11 +171,13 @@ public:
 protected:
     Text              rgn_name;
     SimRegion*        region;
-    RLoc              rloc;
-    int               action;
-    int               formation;
-    int               status;
-    int               speed;
+	RLoc              rloc;
+	int               action;
+	int               formation;
+	int				  offsets;		//** Battle group formation offsets
+	Point			  offset_pos;
+	int               status;
+	int               speed;
 
     Text              tgt_name;
     Text              tgt_desc;

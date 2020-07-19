@@ -246,12 +246,12 @@ Thruster::ExecFrame(double seconds)
 
         FlightComp* flcs = ship->GetFLCS();
 
-        if (flcs) {
-            if (!flcs->IsPowerOn() || flcs->Status() < DEGRADED) {
-                agility   = 0.3;
-                stability = 0.0;
-            }
-        }
+		if (flcs) {
+			if (!flcs->IsPowerOn() || flcs->Status() < DEGRADED) {
+				agility   = 0.0; //0.3;								 Test total loss of control when Flcs is toasted
+				stability = 0.0;
+			}
+		}
 
         // check for thruster damage here:
         if (components.size() >= 3) {
@@ -378,16 +378,16 @@ Thruster::ExecTrans(double x, double y, double z)
     bool   sound_on   = false;
     bool   show_flare = true;
 
-    if (ship->Rep() && ship->Rep()->Hidden())
-    show_flare = false;
+	if (ship->Rep() && ship->Rep()->Hidden())
+	show_flare = false;
 
-    if (ship->Class() == Ship::LCA && 
-            ship->IsAirborne() &&
-            ship->Velocity().length() < 250 &&
-            ship->AltitudeAGL() > ship->Radius()/2) {
+	if (/*ship->Class() == Ship::LCA && */			//** preparing for no atmo terran regions 
+			ship->IsAirborne() &&
+			ship->Velocity().length() < 250 
+			/*ship->AltitudeAGL() > ship->Radius()/2 */) {
 
-        sound_on = true;
-        IncBurn(BOTTOM, TOP);
+		sound_on = true;
+		IncBurn(BOTTOM, TOP);
     }
 
     else if (!ship->IsAirborne()) {

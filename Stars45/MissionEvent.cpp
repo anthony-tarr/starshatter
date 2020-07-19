@@ -419,12 +419,12 @@ MissionEvent::Execute(bool silent)
         if (ship) {
             ship->InflictDamage(event_param[0]);
 
-            if (ship->Integrity() < 1) {
-                NetUtil::SendObjKill(ship, 0, NetObjKill::KILL_MISC);
-                ship->DeathSpiral();
-                Print("    %s Killed By Scripted Event %d (%s)\n", (const char*) ship->Name(), id, FormatGameTime());
-            }
-        }
+			if (ship->Integrity() < 1) {
+				NetUtil::SendObjKill(ship, 0, NetObjKill::KILL_MISC);
+				ship->DeathSpiral(false);
+				Print("    %s Killed By Scripted Event %d (%s)\n", (const char*) ship->Name(), id, FormatGameTime());
+			}
+		}
         else {
             Print("   EVENT %d: Could not apply damage to ship '%s' (not found).\n", id, (const char*) event_ship);
         }

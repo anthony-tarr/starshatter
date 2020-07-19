@@ -1817,34 +1817,39 @@ Starshatter::DoGameKeys()
         else if (KeyDown(KEY_HUD_INST)) {
             time_til_change = 0.5;
             if (hud_view)
-            hud_view->CycleHUDInst();
-        }
+			hud_view->CycleHUDInst();
+		}
 
-        else if (KeyDown(KEY_SELF_DESTRUCT)) {
-            time_til_change = 0.5;
-            
-            if (player_ship && !player_ship->InTransition()) {
+		else if (KeyDown(KEY_SELF_DESTRUCT)) {					//** New uses for suicide key.
+			time_til_change = 0.5;
+			
+			if (player_ship && !player_ship->InTransition()) {
                 double damage = player_ship->Design()->scuttle;
 
-                if (NetGame::IsNetGameClient()) {
-                    NetUtil::SendSelfDestruct(player_ship, damage);
-                }
-                else {
-                    Point scuttle_loc = player_ship->Location() + RandomDirection() * player_ship->Radius();
-                    player_ship->InflictDamage(damage, 0, 1, scuttle_loc);
-                }
+				if (NetGame::IsNetGameClient()) {
+					NetUtil::SendSelfDestruct(player_ship, damage);
+				}
+				
+				else if(player_ship->GetPilot()) {
+					player_ship->EjectPilot();	//** first use, eject from ship.
+				}
+
+				else {
+					Point scuttle_loc = player_ship->Location() + RandomDirection() * player_ship->Radius();	//** suicide
+					player_ship->InflictDamage(damage, 0, 1, scuttle_loc);
+				}
 
                 if (player_ship->Integrity() < 1) {
                     ::Print("  %s 0-0-0-Destruct-0\n\n", player_ship->Name());
 
                     ShipStats* s = ShipStats::Find(player_ship->Name());
-                    if (s)
-                    s->AddEvent(SimEvent::DESTROYED, player_ship->Name());
+					if (s)
+					s->AddEvent(SimEvent::DESTROYED, player_ship->Name());
 
-                    player_ship->DeathSpiral();
-                }
-            }
-        }
+					player_ship->DeathSpiral(true);
+				} 
+			}
+		}
     }
 
     if (gamescreen && player_ship && time_til_change <= 0 && !::GetAsyncKeyState(VK_SHIFT) && !::GetAsyncKeyState(VK_MENU)) {

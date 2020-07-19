@@ -390,10 +390,11 @@ RadioTraffic::DisplayMessage(RadioMessage* msg)
         strcpy_s(txt_buf, msg_buf);
     }
 
-    // vox:
-    const char* path[8] = { "1", "1", "2", "3", "4", "5", "6", "7" };
+	// vox:      
+	const char* path[8] = { "1", "1", "2", "3", "4", "5", "6", "7" };
 
-    RadioVox* vox = new(__FILE__,__LINE__) RadioVox(vox_channel, path[vox_channel], txt_buf);
+	if (vox_channel < 8) {			//********** Limit channel to 7 to avoid "RadioVox" pointing outside the "Path" array (CTD).*********
+	RadioVox* vox = new(__FILE__,__LINE__) RadioVox(vox_channel, path[vox_channel], txt_buf);
 
     if (vox) {
         vox->AddPhrase(dst_buf);
@@ -405,6 +406,7 @@ RadioTraffic::DisplayMessage(RadioMessage* msg)
             delete vox;
         }
     }
+  }
 }
 
 // +----------------------------------------------------------------------+

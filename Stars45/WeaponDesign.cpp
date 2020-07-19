@@ -135,13 +135,14 @@ WeaponDesign::WeaponDesign()
 
     ammo           = -1;
     ripple_count   = 0;
-    capacity       = 100.0f;
-    damage         = 1.0f;
-    damage_type    = 0;
-    penetration    = 1.0f;
-    firing_cone    = 0.0f;
-    aim_az_max     = 1.5f;
-    aim_az_min     = -1.5f;
+	capacity       = 100.0f;
+	damage         = 1.0f;
+	damage_type    = 0;
+	penetration    = 0.1f;     //**** No piercing unless specifically stated.
+	shield_dmg	   = 0.0f;			//****** Shield damage init.
+	firing_cone    = 0.0f;
+	aim_az_max     = 1.5f;
+	aim_az_min     = -1.5f;
     aim_az_rest    = 0.0f;
     aim_el_max     = 1.5f;
     aim_el_min     = -1.5f;
@@ -405,12 +406,16 @@ WeaponDesign::LoadDesign(const char* path, const char* filename, bool mod)
                                 else GET_DEF_TEXT(flare);
                                 else GET_DEF_TEXT(sound);
                                 else GET_DEF_BOOL(probe);
-                                else GET_DEF_NUM (turret_axis);
-                                else GET_DEF_NUM (target_type);
+								else GET_DEF_NUM (turret_axis);
+								else GET_DEF_NUM (target_type);
 
-                                else if (defname == "animation") {
-                                    if (design->anim_length < 16) {
-                                        GetDefText(design->anim_frames[design->anim_length++], pdef, filename);
+								else if (defname == "shield_damage") {					//******** Shield damage reading
+									GetDefNumber(design->shield_dmg,pdef,filename);
+									} 															 
+
+								else if (defname == "animation") {
+									if (design->anim_length < 16) {
+										GetDefText(design->anim_frames[design->anim_length++], pdef, filename);
                                     }
                                     else {
                                         Print("WARNING: too many animation frames for weapon '%s' in '%s'\n",

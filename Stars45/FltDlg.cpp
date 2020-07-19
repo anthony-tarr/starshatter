@@ -737,26 +737,26 @@ FltDlg::OnPackage(AWEvent* event)
                 deck  = d;
             }
         }
-    }
+	}
 
-    int npackage = 0;
-    int slots[4];
+	int npackage = 0;
+	int slots[6];
 
-    for (int i = 0; i < 4; i++)
-    slots[i] = -1;
+	for (int i = 0; i < 6; i++)
+	slots[i] = -1;
 
-    for (int i = 0; i < hangar_list->NumItems(); i++) {
+	for (int i = 0; i < hangar_list->NumItems(); i++) {
         if (hangar_list->IsSelected(i)) {
             int nslot = hangar_list->GetItemData(i);
             hangar->GotoAlert(squad, nslot, deck, elem, load, true);
             slots[npackage] = nslot;
-            hangar_list->SetSelected(i, false);
-            npackage++;
+			hangar_list->SetSelected(i, false);
+			npackage++;
 
-            if (npackage >= 4)
-            break;
-        }
-    }
+			if (npackage >= 6)
+			break;
+		}
+	}
 
     NetUtil::SendElemCreate(elem, squad, slots, false);
 

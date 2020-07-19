@@ -42,6 +42,7 @@
 #include "Shot.h"
 #include "System.h"
 #include "WeaponDesign.h"
+#include "Random.h"
 
 #include "Game.h"
 
@@ -128,13 +129,13 @@ SeekerAI::FindObjective()
     }
 
     Point tloc = target->Location();
-    tloc = Transform(tloc);
+	tloc = Transform(tloc);
 
-    // seeker head limit of 45 degrees:
-    if (tloc.z < 0 || tloc.z < fabs(tloc.x) || tloc.z < fabs(tloc.y)) {
-        overshot = true;
-        SetTarget(0,0);
-        return;
+	// seeker head limit of 45 degrees:
+	if (tloc.z < 0 || (tloc.z)*2 < fabs(tloc.x) || (tloc.z)*2 < fabs(tloc.y)) {      //double angle
+		overshot = true;
+		SetTarget(0,0);
+		return;
     }
 
     // distance from self to target:
@@ -216,13 +217,15 @@ SeekerAI::CheckDecoys(double target_distance)
         ListIter<Shot> decoy = orig_target->GetActiveDecoys();
 
         while (++decoy) {
-            double decoy_distance = Point(decoy->Location() - self->Location()).length();
+			double decoy_distance = Point(decoy->Location() - self->Location()).length();
 
-            if (decoy_distance < target_distance) {
-                if (rand() < 1600) {
-                    SetTarget(decoy.value(), 0);
-                    return;
-                }
+			if (decoy_distance < target_distance) {
+
+				int ran	= rand();
+				if (ran > 26000) {
+					SetTarget(decoy.value(), 0);
+					return;
+				}
             }
         }
     }

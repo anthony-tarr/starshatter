@@ -56,6 +56,8 @@
 #include "QuantumDrive.h"
 #include "Power.h"
 #include "Instruction.h"
+#include "Pilot.h"
+#include "Player.h"
 
 #include "NetGame.h"
 
@@ -1102,12 +1104,13 @@ MFD::DrawGauge(int x, int y, int percent)
 void
 MFD::DrawGameMFD()
 {
-    if (lines < 10) lines++;
+	if (lines < 10) lines++;
 
-    char txt[64];
-    Rect txt_rect(rect.x, rect.y, rect.w, 12);
+	char txt[64];
+	char pilot[32];
+	Rect txt_rect(rect.x, rect.y, rect.w, 12);
 
-    int t = 0;
+	int t = 0;
 
     if (!HUDView::IsArcade() && HUDView::ShowFPS()) {
         sprintf_s(txt, "FPS: %6.2f", Game::FrameRate());
@@ -1154,11 +1157,22 @@ MFD::DrawGameMFD()
     DrawMFDText(t++, ship->GetRegion()->Name(), txt_rect, DT_LEFT);
     txt_rect.y += 10;
 
-    if (lines <= 4) return;
+	if (lines <= 4) return;
 
-    if (ship) {
-        switch (ship->GetFlightPhase()) {
-        case Ship::DOCKED:   DrawMFDText(t++, Game::GetText("MFD.phase.DOCKED").data(),   txt_rect, DT_LEFT); break;
+	if (ship && ship->GetPilot()) {
+		//Player* guy = Player::GetCurrentPlayer();		//** optional display player name
+		//sprintf_s(pilot, "%s" , guy->Name());
+
+		if(ship->GetPilot()->Ejected())
+			sprintf_s(pilot, "%s", "Bailed out");
+		else {sprintf_s(pilot, "%s" "%s" ,  ship->GetPilot()->GetName(), ship->GetPilot()->GetSurname());}		//**pilot name
+		DrawMFDText(t++, pilot, txt_rect, DT_LEFT);		
+		txt_rect.y += 10;
+	}
+
+	if (ship) {
+		switch (ship->GetFlightPhase()) {
+		case Ship::DOCKED:   DrawMFDText(t++, Game::GetText("MFD.phase.DOCKED").data(),   txt_rect, DT_LEFT); break;
         case Ship::ALERT:    DrawMFDText(t++, Game::GetText("MFD.phase.ALERT").data(),    txt_rect, DT_LEFT); break;
         case Ship::LOCKED:   DrawMFDText(t++, Game::GetText("MFD.phase.LOCKED").data(),   txt_rect, DT_LEFT); break;
         case Ship::LAUNCH:   DrawMFDText(t++, Game::GetText("MFD.phase.LAUNCH").data(),   txt_rect, DT_LEFT); break;

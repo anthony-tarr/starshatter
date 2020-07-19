@@ -31,10 +31,10 @@
     AUTHOR:       John DiCamillo
 
 
-    OVERVIEW
-    ========
-    Flight Planning class for creating navpoint routes for fighter elements.
-    Used both by the CarrierAI class and the Flight Dialog.
+	OVERVIEW
+	========
+	Flight Planning class for creating navpoint routes for fighter elements.
+	Used both by the CarrierAI class and the Flight Dialog.
 */
 
 #ifndef FlightPlanner_h
@@ -57,16 +57,20 @@ class Element;
 class FlightPlanner
 {
 public:
-    FlightPlanner(Ship* s);
-    virtual ~FlightPlanner();
+	FlightPlanner(Ship* s);
+	virtual ~FlightPlanner();
 
-    virtual void      CreatePatrolRoute(Element* elem,   int index);
-    virtual void      CreateStrikeRoute(Element* strike, Element* target);
-    virtual void      CreateEscortRoute(Element* escort, Element* ward);
+	virtual void      CreatePatrolRoute(Element* elem,   int index);
+	virtual void      CreateStrikeRoute(Element* strike, Element* target);
+	virtual void      CreateEscortRoute(Element* escort, Element* ward);
 
-    Sim*              sim;
-    Ship*             ship;
-    float             patrol_range;
+	virtual void      CreateCircusRoute(Element* circus, Element* ward);
+	virtual void	  CreateGuardRoute(Element* guard, Element* ward);
+	virtual void	  CreateDeployPoint(Element* squad, Element* hold);
+
+	Sim*              sim;
+	Ship*             ship;
+	float             patrol_range;
 };
 
 // +--------------------------------------------------------------------+

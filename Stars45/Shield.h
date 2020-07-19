@@ -75,12 +75,13 @@ public:
     bool           ShieldCapacitor()          const { return shield_capacitor;       }
     void           SetShieldCapacitor(bool c);
     bool           ShieldBubble()             const { return shield_bubble;          }
-    void           SetShieldBubble(bool b)          { shield_bubble = b;             }
-    double         DeflectionCost()           const { return deflection_cost;        }
-    void           SetDeflectionCost(double c)      { deflection_cost = (float) c;   }
+	void           SetShieldBubble(bool b)          { shield_bubble = b;             }
+	double         DeflectionCost()           const { return deflection_cost;        }
+	void           SetDeflectionCost(double c)      { deflection_cost = (float) c;   }
+	double		   Piercing(Shot* shot);												//*** shield pierce function
 
-    // override from System:
-    virtual void   SetPowerLevel(double level);
+	// override from System:
+	virtual void   SetPowerLevel(double level);
     virtual void   SetNetShieldLevel(int level);
 
     virtual void   Distribute(double delivered_energy, double seconds);
@@ -92,9 +93,10 @@ protected:
     float          shield_factor;
     float          shield_level;
     float          shield_curve;
-    float          shield_cutoff;
-    float          requested_power_level;
-    float          deflection_cost;
+	float          shield_cutoff;
+	float          requested_power_level;
+	float          deflection_cost;
+	double		   stress_level;          //*** shield stress counter
 };
 
 #endif Shield_h

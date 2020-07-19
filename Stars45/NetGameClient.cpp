@@ -554,13 +554,13 @@ NetGameClient::DoObjKill(NetMsg* msg)
         if (obj_kill.GetKillType() == NetObjKill::KILL_DOCK) {
             FlightDeck* deck = killer->GetFlightDeck(obj_kill.GetFlightDeck());
             sim->NetDockShip(ship, killer, deck);
-        }
-        else {
-            ship->InflictNetDamage(ship->Integrity());
-            ship->DeathSpiral();
+		}
+		else {
+			ship->InflictNetDamage(ship->Integrity());
+			ship->DeathSpiral(false);
 
-            if (!obj_kill.GetRespawn())
-            ship->SetRespawnCount(0);
+			if (!obj_kill.GetRespawn())
+			ship->SetRespawnCount(0);
             else
             ship->SetRespawnLoc(obj_kill.GetRespawnLoc());
         }

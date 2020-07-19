@@ -61,9 +61,11 @@ Element::Element(const char* call_sign, int a_iff, int a_type)
         char buf[32];
         sprintf_s(buf, "Pkg %d", id);
         name = buf;
-    }
+	}
 
-    SetLoadout(0);
+	SetLoadout(0);
+
+	guarded = false;
 }
 
 Element::~Element()

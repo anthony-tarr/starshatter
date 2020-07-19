@@ -69,13 +69,14 @@ public:
         SMALL_FIRE        =  9, 
         SMALL_EXPLOSION   = 10,
         LARGE_EXPLOSION   = 11,
-        LARGE_BURST       = 12,
-        NUKE_EXPLOSION    = 13,
-        QUANTUM_FLASH     = 14,
-        HYPER_FLASH       = 15
-    };
+		LARGE_BURST       = 12,
+		NUKE_EXPLOSION    = 13,
+		QUANTUM_FLASH     = 14,
+		HYPER_FLASH       = 15,
+		FIRE_TRAIL		  = 25		//** fire and smoke animation
+	};
 
-    Explosion(int type, const Vec3& pos, const Vec3& vel, 
+	Explosion(int type, const Vec3& pos, const Vec3& vel, 
     float exp_scale, float part_scale,
     SimRegion* rgn=0, SimObject* source=0);
     virtual ~Explosion();
@@ -89,19 +90,23 @@ public:
     virtual void      Activate(Scene& scene);
     virtual void      Deactivate(Scene& scene);
 
-    virtual bool         Update(SimObject* obj);
-    virtual const char*  GetObserverName() const;
+	virtual bool         Update(SimObject* obj);
+	virtual const char*  GetObserverName() const;
+
+	virtual void		SetStill(bool s)	{ still = s; }
 
 protected:
-    int               type;
-    Particles*        particles; 
+	int               type;
+	Particles*        particles; 
 
     float             scale;
     float             scale1;
     float             scale2;
 
-    SimObject*        source;
-    Point             mount_rel;
+	SimObject*        source;
+	Point             mount_rel;
+
+	bool			  still;
 };
 
 #endif Explosion_h

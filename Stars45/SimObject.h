@@ -63,13 +63,14 @@ public:
     enum TYPES { 
         SIM_SHIP=100,
         SIM_SHOT,
-        SIM_DRONE,
-        SIM_EXPLOSION,
-        SIM_DEBRIS,
-        SIM_ASTEROID
-    };
+		SIM_DRONE,
+		SIM_EXPLOSION,
+		SIM_DEBRIS,
+		SIM_ASTEROID,
+		SIM_GRAVEYARD
+	};
 
-    SimObject()                        :                region(0), objid(0), active(0), notifying(0) { }
+	SimObject()                        :                region(0), objid(0), active(0), notifying(0) { }
     SimObject(const char* n, int t=0)  : Physical(n,t), region(0), objid(0), active(0), notifying(0) { }
     virtual ~SimObject();
 

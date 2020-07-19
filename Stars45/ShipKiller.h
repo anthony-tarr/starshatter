@@ -31,9 +31,9 @@
     AUTHOR:       John DiCamillo
 
 
-    OVERVIEW
-    ========
-    ShipKiller (i.e. death spiral) class
+	OVERVIEW
+	========
+	ShipKiller (i.e. death spiral) class
 */
 
 #ifndef ShipKiller_h
@@ -42,37 +42,42 @@
 #include "Types.h"
 #include "Geometry.h"
 #include "Text.h"
+#include "Camera.h"
 
 // +--------------------------------------------------------------------+
 
 class Ship;
+class ShipGraveyard;
 
 // +--------------------------------------------------------------------+
 
 class ShipKiller
 {
 public:
-    const float       DEATH_CAM_LINGER;
+	const float       DEATH_CAM_LINGER;
 
-    // CONSTRUCTORS:
-    ShipKiller(Ship* ship);
-    virtual ~ShipKiller();
+	// CONSTRUCTORS:
+	ShipKiller(Ship* ship);
+	virtual ~ShipKiller();
 
-    virtual void      BeginDeathSpiral();
-    virtual void      ExecFrame(double seconds);
+	virtual void      BeginDeathSpiral(bool instakill);
+	virtual void      ExecFrame(double seconds);
 
-    // GENERAL ACCESSORS:
-    virtual float     TransitionTime() const { return time; }
-    virtual Point     TransitionLoc()  const { return loc;  }
+	// GENERAL ACCESSORS:
+	virtual float     TransitionTime() const { return time; }
+	virtual Point     TransitionLoc()  const { return loc;  }
+
+	virtual Camera*   GetCamera()            { return &camera; }
 
 protected:
-    Ship*             ship;
+	Ship*             ship;
 
-    float             time;
-    Point             loc;
+	float             time;
+	Point             loc;
 
-    float             exp_time;
-    int               exp_index;
+	float             exp_time;
+	int               exp_index;
+	Camera			  camera;
 };
 
 #endif ShipKiller_h

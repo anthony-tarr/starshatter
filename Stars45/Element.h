@@ -95,12 +95,17 @@ public:
     bool              IsHostileTo(int iff_code)           const;
     bool              IsObjectiveTargetOf(const Ship* s)  const;
     bool              IsRogue()         const { return rogue;            }
-    bool              IsPlayable()      const { return playable;         }
-    int*              Loadout()               { return load;             }
+	bool              IsPlayable()      const { return playable;         }
+	int*              Loadout()               { return load;             }
 
-    void              SetRogue(bool r)        { rogue = r;               }
-    void              SetPlayable(bool p)     { playable = p;            }
-    void              SetLoadout(int* l);
+	bool			  IsGuarded()			  { return 	guarded;		 }		//**Guards stuff 
+	void			  SetGuarded(bool g)	  { guarded = g;		     }
+	Element*		  GetGuards()			  {	return guards;			 }	
+	void			  SetGuards(Element* flight) { guards = flight;		 }
+
+	void              SetRogue(bool r)        { rogue = r;               }
+	void              SetPlayable(bool p)     { playable = p;            }
+	void              SetLoadout(int* l);
     virtual void      SetIFF(int iff);
 
     virtual void         ExecFrame(double seconds);
@@ -164,11 +169,14 @@ protected:
     int               player;
     int               command_ai;
     int               respawns;
-    int               intel;
-    Text              name;
+	int               intel;
+	Text              name;
 
-    // squadron elements only:
-    int               count;
+	bool			  guarded;
+	Element*		  guards;
+
+	// squadron elements only:
+	int               count;
 
     List<Ship>        ships;
     List<Text>        ship_names;

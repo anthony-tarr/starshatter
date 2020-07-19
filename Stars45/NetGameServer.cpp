@@ -1013,12 +1013,12 @@ NetGameServer::DoSelfDestruct(NetMsg* msg)
             Print("    %s Self Destruct (%s)\n", ship->Name(), FormatGameTime());
 
             ShipStats* killee = ShipStats::Find(ship->Name());
-            if (killee)
-            killee->AddEvent(SimEvent::DESTROYED, ship->Name());
+			if (killee)
+			killee->AddEvent(SimEvent::DESTROYED, ship->Name());
 
-            ship->DeathSpiral();
-        }
-    }
+			ship->DeathSpiral(true);
+		}
+	}
 }
 
 // +--------------------------------------------------------------------+

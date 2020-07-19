@@ -274,12 +274,13 @@ Sprite::Render(Video* video, DWORD flags)
 
     if (life > 0 || loop) {
         const Camera*  camera = video->GetCamera();
-        Matrix         orient(camera->Orientation());
-        Vec3           nrm(camera->vpn() * -1);
-        ColorValue     white((float) shade, (float) shade, (float) shade, (float) shade);
-        DWORD          diff = white.ToColor().Value();
+		Matrix         orient(camera->Orientation());
+		Vec3           nrm(camera->vpn() * -1);
+		ColorValue     white((float) shade, (float) shade, (float) shade, (float) shade);
+		ColorValue     whiten((float) shade/3, (float) shade/3, (float) shade/3, (float) shade/3);
+		DWORD          diff = white.ToColor().Value();
 
-        orient.Roll(angle);
+		orient.Roll(angle);
 
         Vec3           vx = Vec3((float) orient(0,0),
         (float) orient(0,1),
@@ -317,15 +318,15 @@ Sprite::Render(Video* video, DWORD flags)
         }
 
         else {
-            mtl.Ka            = white;
-            mtl.Kd            = white;
-            mtl.Ks            = Color::Black;
-            mtl.Ke            = Color::Black;
-            mtl.tex_diffuse   = Frame();
-            mtl.tex_emissive  = 0;
-            mtl.blend         = blend_mode;
-            mtl.luminous      = luminous;
-        }
+			mtl.Ka            = white;
+			mtl.Kd            = white;
+			mtl.Ks            = Color::Black;
+			mtl.Ke            = whiten; //Color::Black;
+			mtl.tex_diffuse   = Frame();
+			mtl.tex_emissive  = Frame(); //0;
+			mtl.blend         = blend_mode;
+			mtl.luminous      = luminous;
+		}
 
         video->DrawPolys(1, &poly);
     }

@@ -133,13 +133,13 @@ public:
     float             carry_mass;
     float             carry_resist;
 
-    // shot parameters:
-    int               damage_type;      // 0: normal, 1: EMP, 2: power drain
-    float             damage;           // if beam, damage per second;
-    // else,    damage per shot.
-    float             penetration;      // ability to pierce shields, 1 is default
-    float             speed;
-    float             life;
+	// shot parameters:
+	int               damage_type;      // 0: normal, 1: EMP, 2: power drain
+	float             damage;           // if beam, damage per second;
+	float			  shield_dmg;		//**** ammount of damage to shields.
+	float             penetration;      // ability to pierce shields, 1 is default
+	float             speed;
+	float             life;
     float             mass;
     float             drag;
     float             thrust;

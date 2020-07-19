@@ -62,13 +62,13 @@ public:
 
     enum EVENT { LAUNCH=1, DOCK, LAND, EJECT, CRASH, COLLIDE, DESTROYED,
         MAKE_ORBIT, BREAK_ORBIT, QUANTUM_JUMP,
-        LAUNCH_SHIP, RECOVER_SHIP,
-        FIRE_GUNS, FIRE_MISSILE, DROP_DECOY,
-        GUNS_KILL, MISSILE_KILL,
-        LAUNCH_PROBE, SCAN_TARGET
-    };
+		LAUNCH_SHIP, RECOVER_SHIP,
+		FIRE_GUNS, FIRE_MISSILE, DROP_DECOY,
+		GUNS_KILL, MISSILE_KILL,
+		LAUNCH_PROBE, SCAN_TARGET, PILOT_KILLED, DISABLED
+	};
 
-    SimEvent(int event, const char* tgt=0, const char* info=0);
+	SimEvent(int event, const char* tgt=0, const char* info=0);
     ~SimEvent();
 
     int            GetEvent()        const { return event;         }

@@ -532,12 +532,12 @@ Shot::Damage() const
         damage = base_damage * charge * fade * Game::FrameTime();
     }
 
-    // energy wep damage based on time:
-    else if (primary) {
-        damage = base_damage * charge * life;
-    }
+	// energy wep damage based on time:
+	else if (primary) {
+		damage = base_damage * charge * life/2;		// halved damage increase due to time
+	}
 
-    // missile damage is constant:
+	// missile damage is constant:
     else {
         damage = base_damage * charge;
     }

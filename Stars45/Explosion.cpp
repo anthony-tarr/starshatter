@@ -92,12 +92,13 @@ SimRegion* rgn, SimObject* src)
     MoveTo(pos);
     velocity = vel;
     drag     = 0.3f;
-    rep      = 0;
-    light    = 0;
-    life     = 0;
+	rep      = 0;
+	light    = 0;
+	life     = 0;
+	still	 = false;
 
-    if (type == QUANTUM_FLASH) {
-        life = 1.1;
+	if (type == QUANTUM_FLASH) {
+		life = 1.1;
 
         QuantumFlash* q = new(__FILE__,__LINE__) QuantumFlash();
         rep = q;

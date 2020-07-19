@@ -28,12 +28,12 @@
 
     SUBSYSTEM:    Stars
     FILE:         ShipKiller.cpp
-    AUTHOR:       John DiCamillo
+	AUTHOR:       John DiCamillo
 
 
-    OVERVIEW
-    ========
-    ShipKiller class implementation
+	OVERVIEW
+	========
+	ShipKiller class implementation
 */
 
 #include "MemDebug.h"
@@ -47,6 +47,7 @@
 #include "Explosion.h"
 #include "Debris.h"
 #include "HUDSounds.h"
+#include "ShipGraveyard.h"
 
 #include "Solid.h"
 #include "Random.h"
@@ -55,6 +56,7 @@
 
 ShipKiller::ShipKiller(Ship* s)
 : ship(s), DEATH_CAM_LINGER(5.0f), time(0.0f), exp_time(0.0f), exp_index(0)
+
 {
 }
 
@@ -66,90 +68,98 @@ ShipKiller::~ShipKiller()
 
 inline int random_index()
 {
-    return (int) (rand()/3277);
+	return (int) (rand()/3277);
 }
 
 // +----------------------------------------------------------------------+
 
 void
-ShipKiller::BeginDeathSpiral()
+ShipKiller::BeginDeathSpiral(bool instakill)
 {
-    if (!ship) return;
+	if (!ship) return;
 
-    // shut down all ship systems:
-    ListIter<System> iter = ship->Systems();
-    while (++iter) {
-        iter->PowerOff();
-        iter->SetPowerLevel(0);
+	// shut down all ship systems:
+	ListIter<System> iter = ship->Systems();
+	while (++iter) {
+		iter->PowerOff();
+		iter->SetPowerLevel(0);
 
-        if (iter->Type() == System::WEAPON) {
-            Weapon* gun  = (Weapon*) iter.value();
+		if (iter->Type() == System::WEAPON) {
+			Weapon* gun  = (Weapon*) iter.value();
 
-            for (int i = 0; i < Weapon::MAX_BARRELS; i++) {
-                Shot* beam = gun->GetBeam(i);
-                if (beam)
-                beam->Destroy();
-            }
-        }
-    }
+			for (int i = 0; i < Weapon::MAX_BARRELS; i++) {
+				Shot* beam = gun->GetBeam(i);
+				if (beam)
+				beam->Destroy();
+			}
+		  }
+	   }
 
-    if (ship->GetShieldRep())
-    ship->GetShieldRep()->Hide();
+	if (ship->GetShieldRep())
+	ship->GetShieldRep()->Hide();
 
-    Sim*              sim    = Sim::GetSim();
-    const ShipDesign* design = ship->Design();
+	Sim*              sim    = Sim::GetSim();
+	const ShipDesign* design = ship->Design();
 
-    float  time_to_go = design->death_spiral_time;
-    time = DEATH_CAM_LINGER + time_to_go;
-    loc  = ship->Location() + ship->Velocity() * (time_to_go-1.0f);
+	float  time_to_go;
 
-    if (rand() < 16000)
-    loc += ship->BeamLine() * -3 * ship->Radius();
-    else
-    loc += ship->BeamLine() *  3 * ship->Radius();
+	if (instakill)
+		time_to_go = 0;
 
-    if (rand() < 8000)
-    loc += ship->LiftLine() * -1 * ship->Radius();
-    else
-    loc += ship->LiftLine() *  2 * ship->Radius();
+	else time_to_go = design->death_spiral_time;
 
-    // stop on crash:
-    if (ship->IsGroundUnit() || (ship->IsAirborne() && ship->AltitudeAGL() < ship->Radius()*2)) {
-        time = DEATH_CAM_LINGER;
-        loc  = ship->Location() + Point(6*ship->Radius(), 7*ship->Radius(), 8*ship->Radius());
-        ship->SetVelocity(Point(0,0,0));
-    }
-    // else, slow tumble:
-    else {
-        Point torque = RandomVector(ship->Mass()/7);
-        ship->ApplyTorque(torque);
+	time = DEATH_CAM_LINGER + time_to_go;
 
-        for (int i = 0; i < 5; i++) {
-            exp_index = random_index() % ShipDesign::MAX_EXPLOSIONS;
-            if (design->explosion[exp_index].type > 0 && !design->explosion[exp_index].final)
-            break;
-        }
+	loc  = ship->Location() + ship->Velocity() * (time_to_go-1.0f);
 
-        float exp_scale = design->explosion_scale;
-        if (exp_scale <= 0)
-        exp_scale = design->scale;
+	if (rand() < 16000)
+	loc += ship->BeamLine() * -3 * ship->Radius();
+	else
+	loc += ship->BeamLine() *  3 * ship->Radius();
 
-        exp_time  = design->explosion[exp_index].time;
+	if (rand() < 8000)
+	loc += ship->LiftLine() * -1 * ship->Radius();
+	else
+	loc += ship->LiftLine() *  2 * ship->Radius();
 
-        if (design->explosion[exp_index].type > 0) {
-            Point exp_loc = ship->Location() + (design->explosion[exp_index].loc * ship->Cam().Orientation());
-            sim->CreateExplosion(exp_loc,
-            ship->Velocity(), 
-            design->explosion[exp_index].type, 
-            (float) ship->Radius(), 
-            exp_scale, 
-            ship->GetRegion(), 
-            ship);
-        }
-    }
+	// stop on crash:
+	if (ship->IsGroundUnit() || (ship->IsAirborne() && ship->AltitudeAGL() < ship->Radius()*2)) {
+		time = DEATH_CAM_LINGER;
+		loc  = ship->Location() + Point(6*ship->Radius(), 7*ship->Radius(), 8*ship->Radius());
+		ship->SetVelocity(Point(0,0,0));
+	}
+	// else, slow tumble:
+	else {
+		Point torque = RandomVector(ship->Mass()/7);
+		ship->ApplyTorque(torque);
 
-    ship->SetControls(0);
-    ship->SetupAgility();
+		for (int i = 0; i < 5; i++) {
+			exp_index = random_index() % ShipDesign::MAX_EXPLOSIONS;
+			if (design->explosion[exp_index].type > 0 && !design->explosion[exp_index].final)
+			break;
+		}
+
+		float exp_scale = design->explosion_scale;
+		if (exp_scale <= 0)
+		exp_scale = design->scale;
+
+		exp_time  = design->explosion[exp_index].time;
+
+		if (design->explosion[exp_index].type > 0) {
+			Point exp_loc = ship->Location() + (design->explosion[exp_index].loc * ship->Cam().Orientation());
+			sim->CreateExplosion(exp_loc,
+			ship->Velocity(), 
+			design->explosion[exp_index].type, 
+			(float) ship->Radius(), 
+			exp_scale, 
+			ship->GetRegion(), 
+			ship);
+		}
+	}
+
+	ship->SetControls(0);
+	ship->SetupAgility();
+	
 }
 
 // +----------------------------------------------------------------------+
@@ -157,131 +167,135 @@ ShipKiller::BeginDeathSpiral()
 void
 ShipKiller::ExecFrame(double seconds)
 {
-    Sim*              sim    = Sim::GetSim();
-    const ShipDesign* design = ship->Design();
+	Sim*              sim    = Sim::GetSim();
+	const ShipDesign* design = ship->Design();
 
-    time     -= (float) seconds;
-    exp_time -= (float) seconds;
+	time     -= (float) seconds;
+	exp_time -= (float) seconds;
 
-    float exp_scale = design->explosion_scale;
-    if (exp_scale <= 0)
-    exp_scale = design->scale;
+	float exp_scale = design->explosion_scale;
+	if (exp_scale <= 0)
+	exp_scale = design->scale;
 
-    if (exp_time < 0) {
-        exp_index++;
-        if (exp_index >= ShipDesign::MAX_EXPLOSIONS || design->explosion[exp_index].final)
-        exp_index = 0;
+	if (exp_time < 0) {
+		exp_index++;
+		if (exp_index >= ShipDesign::MAX_EXPLOSIONS || design->explosion[exp_index].final)
+		exp_index = 0;
 
-        exp_time  = design->explosion[exp_index].time;
+		exp_time  = design->explosion[exp_index].time;
 
-        if (design->explosion[exp_index].type > 0) {
-            Point exp_loc = ship->Location() + (design->explosion[exp_index].loc * ship->Cam().Orientation());
-            sim->CreateExplosion(exp_loc,
-            ship->Velocity(), 
-            design->explosion[exp_index].type, 
-            (float) ship->Radius(), 
-            exp_scale, 
-            ship->GetRegion(), 
-            ship);
-        }
-    }
+		if (design->explosion[exp_index].type > 0) {
+			Point exp_loc = ship->Location() + (design->explosion[exp_index].loc * ship->Cam().Orientation());
+			sim->CreateExplosion(exp_loc,
+			ship->Velocity(), 
+			design->explosion[exp_index].type, 
+			(float) ship->Radius(), 
+			exp_scale, 
+			ship->GetRegion(), 
+			ship);
+		}
+	}
 
-    if (time < DEATH_CAM_LINGER) {
-        for (int i = 0; i < ShipDesign::MAX_EXPLOSIONS; i++) {
-            if (design->explosion[i].final) {
-                Point exp_loc = ship->Location() + (design->explosion[i].loc * ship->Cam().Orientation());
-                sim->CreateExplosion(exp_loc,
-                ship->Velocity(), 
-                design->explosion[i].type, 
-                (float) ship->Radius(), 
-                exp_scale, 
-                ship->GetRegion());
-            }
-        }
+	if (time < DEATH_CAM_LINGER) {
 
-        for (int i = 0; i < ShipDesign::MAX_DEBRIS; i++) {
-            if (design->debris[i].model) {
-                Point debris_loc = ship->Location() + (design->debris[i].loc * ship->Cam().Orientation());
-                Point debris_vel = debris_loc - ship->Location();
-                debris_vel.Normalize();
+		for (int i = 0; i < ShipDesign::MAX_EXPLOSIONS; i++) {
+			if (design->explosion[i].final) {
+				Point exp_loc = ship->Location() + (design->explosion[i].loc * ship->Cam().Orientation());
+				sim->CreateExplosion(exp_loc,
+				ship->Velocity(), 
+				design->explosion[i].type, 
+				(float) ship->Radius(), 
+				exp_scale, 
+				ship->GetRegion());
+			}
+		}
 
-                if (design->debris[i].speed > 0)
-                debris_vel *= design->debris[i].speed;
-                else
-                debris_vel *= 200;
+		for (int i = 0; i < ShipDesign::MAX_DEBRIS; i++) {
+			if (design->debris[i].model) {
+				Point debris_loc = ship->Location() + (design->debris[i].loc * ship->Cam().Orientation());
+				Point debris_vel = debris_loc - ship->Location();
+				debris_vel.Normalize();
 
-                if (ship->IsGroundUnit()) {
-                    debris_vel *= 2;
-                    
-                    if (debris_vel.y < 0)
-                    debris_vel.y *= -1;
-                }
+				if (design->debris[i].speed > 0)
+				debris_vel *= design->debris[i].speed;
+				else
+				debris_vel *= 200;
 
-                for (int n = 0; n < design->debris[i].count; n++) {
-                    Debris* debris = sim->CreateDebris(debris_loc,
-                    debris_vel + ship->Velocity(),
-                    design->debris[i].model,
-                    design->debris[i].mass,
-                    ship->GetRegion());
+				if (ship->IsGroundUnit()) {
+					debris_vel *= 2;
+					
+					if (debris_vel.y < 0)
+					debris_vel.y *= -1;
+				}
 
-                    debris->SetLife(design->debris[i].life);
-                    debris->SetDrag(design->debris[i].drag);
+				for (int n = 0; n < design->debris[i].count; n++) {
+					Debris* debris = sim->CreateDebris(debris_loc,
+					debris_vel + ship->Velocity(),
+					design->debris[i].model,
+					design->debris[i].mass,
+					ship->GetRegion());
 
-                    if (n == 0) {
-                        debris->CloneCam(ship->Cam());
-                        debris->MoveTo(debris_loc);
-                    }
+					debris->SetLife(design->debris[i].life);
+					debris->SetDrag(design->debris[i].drag);
 
-                    for (int fire = 0; fire < 5; fire++) {
-                        if (design->debris[i].fire_loc[fire] == Vec3(0,0,0))
-                        continue;
+					if (n == 0) {
+						debris->CloneCam(ship->Cam());
+						debris->MoveTo(debris_loc);
+					}
 
-                        Point fire_loc = debris->Location() + (design->debris[i].fire_loc[fire] * debris->Cam().Orientation());
+					for (int fire = 0; fire < 5; fire++) {
+						if (design->debris[i].fire_loc[fire] == Vec3(0,0,0))
+						continue;
 
-                        if (design->debris[i].fire_type > 0) {
-                            sim->CreateExplosion(fire_loc,
-                            ship->Velocity(), 
-                            design->debris[i].fire_type, 
-                            exp_scale,
-                            exp_scale, 
-                            ship->GetRegion(),
-                            debris);
-                        }
-                        else {
-                            sim->CreateExplosion(fire_loc,
-                            ship->Velocity(), 
-                            Explosion::SMALL_FIRE, 
-                            exp_scale,
-                            exp_scale, 
-                            ship->GetRegion(),
-                            debris);
+						Point fire_loc = debris->Location() + (design->debris[i].fire_loc[fire] * debris->Cam().Orientation());
 
-                            sim->CreateExplosion(fire_loc,
-                            ship->Velocity(), 
-                            Explosion::SMOKE_TRAIL, 
-                            exp_scale * 0.25f,
-                            exp_scale * 0.25f, 
-                            ship->GetRegion(),
-                            debris);
-                        }
-                    }
+						if (design->debris[i].fire_type > 0) {
+							sim->CreateExplosion(fire_loc,
+							ship->Velocity(), 
+							design->debris[i].fire_type, 
+							exp_scale,
+							exp_scale, 
+							ship->GetRegion(),
+							debris);
+						}
+						else {
+							sim->CreateExplosion(fire_loc,
+							ship->Velocity(), 
+							Explosion::SMALL_FIRE, 
+							exp_scale,
+							exp_scale, 
+							ship->GetRegion(),
+							debris);
 
-                    if (n+1 < design->debris[i].count) {
-                        debris_vel = RandomVector(1);
+							sim->CreateExplosion(fire_loc,
+							ship->Velocity(), 
+							Explosion::SMOKE_TRAIL, 
+							exp_scale * 0.25f,
+							exp_scale * 0.25f, 
+							ship->GetRegion(),
+							debris);
+						}
+					}
 
-                        if (design->debris[i].speed > 0)
-                        debris_vel *= design->debris[i].speed * Random(0.8, 1.2);
-                        else
-                        debris_vel *= 300 + rand()/50;
-                    }
-                }
-            }
-        }
+					if (n+1 < design->debris[i].count) {
+						debris_vel = RandomVector(1);
 
-        if (ship == sim->GetPlayerShip())
-        HUDSounds::StopSound(HUDSounds::SND_RED_ALERT);
+						if (design->debris[i].speed > 0)
+						debris_vel *= design->debris[i].speed * Random(0.8, 1.2);
+						else
+						debris_vel *= 300 + rand()/50;
+					}
+				}
+			}
+		}
 
-        sim->CreateSplashDamage(ship);
-        ship->Destroy(); // CAREFUL!!!  This will also delete this object!
-    }
+		if (ship == sim->GetPlayerShip())
+		HUDSounds::StopSound(HUDSounds::SND_RED_ALERT);
+
+		ShipGraveyard* grave = sim->CreateGraveyard(ship,true, ship->GetRegion());
+		grave->Setlife(140);
+		grave->CreateCloud();
+		sim->CreateSplashDamage(ship);
+		ship->Destroy(); // CAREFUL!!!  This will also delete this object!
+	}
 }

@@ -55,11 +55,11 @@
 // +----------------------------------------------------------------------+
 
 Weapon::Weapon(WeaponDesign* d, int nmuz, Vec3* muzzles, double az, double el)
-    : System(WEAPON, d->type, d->name, d->value, d->capacity, d->capacity,
-            d->recharge_rate),
-      design(d), group(d->group), ammo(-1), ripple_count(0),
-      aim_azimuth((float) az), aim_elevation((float) el),
-      old_azimuth(0.0f), old_elevation(0.0f), aim_time(0),
+: System(WEAPON, d->type, d->name, d->value,
+d->capacity, d->capacity, d->recharge_rate),
+design(d), group(d->group), ammo(-1), ripple_count(0),
+aim_azimuth((float) az), aim_elevation((float) el),
+old_azimuth(0.0f), old_elevation(0.0f), aim_time(0),
       enabled(true), refire(0.0f),
       mass(d->carry_mass), resist(d->carry_resist),
       guided(d->guided), shot_speed(d->speed),
@@ -320,11 +320,16 @@ Weapon::ExecFrame(double seconds)
     locked   = false;
     centered = false;
 
-    if (!ship)
-    return;
+	if (!ship)
+	return;
 
-    if (orders == POINT_DEFENSE && enabled)
-    SelectTarget();
+	if(ship->IsCold()) {
+		ZeroAim();
+		return;
+	}
+
+	if (orders == POINT_DEFENSE && enabled)
+	SelectTarget();
 
     if (beams && !target) {
         for (int i = 0; i < nbarrels; i++) {

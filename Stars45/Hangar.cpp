@@ -525,13 +525,13 @@ Hangar::Stow(Ship* incoming)
     int slot     = -1;
 
     if (FindSlot(incoming, squadron, slot)) {
-        HangarSlot* s = &(squadrons[squadron][slot]);
-        s->state   = MAINT;
-        s->design  = incoming->Design();
-        s->time    = 2400;
-        s->package = 0;   // XXX MEMORY LEAK?
+		HangarSlot* s = &(squadrons[squadron][slot]);
+		s->state   = MAINT;
+		s->design  = incoming->Design();
+		s->time    = 300; //2400
+		s->package = 0;   // XXX MEMORY LEAK?
 
-        // extra maintenance time?
+		// extra maintenance time?
         if (incoming->Integrity() < incoming->Design()->integrity) {
             double damage = 100 * ((double) incoming->Design()->integrity - (double) incoming->Integrity()) / (double) incoming->Design()->integrity;
 

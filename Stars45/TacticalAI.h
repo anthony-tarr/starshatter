@@ -69,12 +69,14 @@ public:
     virtual void      ExecFrame(double seconds);
 
     virtual ROE       RulesOfEngagement()  const { return roe;           }
-    virtual double    ThreatLevel()        const { return threat_level;  }
-    virtual double    SupportLevel()       const { return support_level; }
+	virtual double    ThreatLevel()        const { return threat_level;  }
+	virtual double    SupportLevel()       const { return support_level; }
+
+	virtual CarrierAI*	GetCarrierAI()			{ return carrier_ai;	}
 
 protected:
-    // pick the best target if we don't have one yet:
-    virtual void      CheckOrders();
+	// pick the best target if we don't have one yet:
+	virtual void      CheckOrders();
     virtual bool      CheckShipOrders();
     virtual bool      ProcessOrders();
     virtual bool      CheckFlightPlan();
