@@ -624,13 +624,10 @@
     <ClCompile Include="Pilot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\nGenEx\PilotRep.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CanopyRep.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShipGraveyard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\nGenEx\PilotRep.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1129,13 +1126,10 @@
     <ClInclude Include="Pilot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\nGenEx\PilotRep.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CanopyRep.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ShipGraveyard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\nGenEx\PilotRep.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -31,13 +31,11 @@ public:
 
 
 protected:
-
- const char*	name;
- const char*	surname;
+	const char*	name;
+	const char*	surname;
 	int		gender;
 	bool	alive;
 	bool	ejected;
-
 	int		FM;
 	int		side;
 	bool	init;

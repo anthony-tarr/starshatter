@@ -804,6 +804,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\nGenEx\PilotRep.cpp" />
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="AudDlg.cpp" />
     <ClCompile Include="AudioConfig.cpp" />
@@ -956,6 +957,7 @@
     <ClCompile Include="NPClientWraps.cpp" />
     <ClCompile Include="OptDlg.cpp" />
     <ClCompile Include="..\nGenEx\Particles.cpp" />
+    <ClCompile Include="Pilot.cpp" />
     <ClCompile Include="PlanScreen.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerDlg.cpp" />
@@ -978,6 +980,7 @@
     <ClCompile Include="ShipAI.cpp" />
     <ClCompile Include="ShipCtrl.cpp" />
     <ClCompile Include="ShipDesign.cpp" />
+    <ClCompile Include="ShipGraveyard.cpp" />
     <ClCompile Include="ShipKiller.cpp" />
     <ClCompile Include="ShipSolid.cpp" />
     <ClCompile Include="Shot.cpp" />
@@ -1024,6 +1027,7 @@
     <ResourceCompile Include="Stars.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\nGenEx\PilotRep.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="AudDlg.h" />
     <ClInclude Include="AudioConfig.h" />
@@ -1149,6 +1153,7 @@
     <ClInclude Include="NetUtil.h" />
     <ClInclude Include="NPClientWraps.h" />
     <ClInclude Include="OptDlg.h" />
+    <ClInclude Include="Pilot.h" />
     <ClInclude Include="PlanScreen.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerDlg.h" />
@@ -1163,6 +1168,7 @@
     <ClInclude Include="SeekerAI.h" />
     <ClInclude Include="ShieldRep.h" />
     <ClInclude Include="ShipCtrl.h" />
+    <ClInclude Include="ShipGraveyard.h" />
     <ClInclude Include="ShipKiller.h" />
     <ClInclude Include="StarServer.h" />
     <ClInclude Include="Starshatter.h" />
