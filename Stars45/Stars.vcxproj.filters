@@ -630,6 +630,9 @@
     <ClCompile Include="..\nGenEx\PilotRep.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CanopyRep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Stars.rc">
@@ -1130,6 +1133,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\nGenEx\PilotRep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CanopyRep.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -831,6 +831,7 @@
     <ClCompile Include="CampaignPlanStrategic.cpp" />
     <ClCompile Include="CampaignSaveGame.cpp" />
     <ClCompile Include="CampaignSituationReport.cpp" />
+    <ClCompile Include="CanopyRep.cpp" />
     <ClCompile Include="CarrierAI.cpp" />
     <ClCompile Include="CmdDlg.cpp" />
     <ClCompile Include="CmdForceDlg.cpp" />
@@ -1048,6 +1049,7 @@
     <ClInclude Include="CampaignPlanMovement.h" />
     <ClInclude Include="CampaignPlanStrategic.h" />
     <ClInclude Include="CampaignSituationReport.h" />
+    <ClInclude Include="CanopyRep.h" />
     <ClInclude Include="CmdDlg.h" />
     <ClInclude Include="CmdForceDlg.h" />
     <ClInclude Include="CmdIntelDlg.h" />
