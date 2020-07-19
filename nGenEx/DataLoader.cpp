@@ -216,8 +216,7 @@ DataLoader::FindFile(const char* name)
 
 // +--------------------------------------------------------------------+
 
-int
-DataLoader::ListFiles(const char* filter, List<Text>& list, bool recurse)
+int DataLoader::ListFiles(const char* filter, List<Text>& list, bool recurse)
 {
     list.destroy();
 

@@ -61,7 +61,7 @@ extern FILE* ErrLog;
 extern int   VD3D_describe_things;
 int          dump_missions = 0;
 
-const char* GAME_VERSION = "5.1.88 EX";
+const char* GAME_VERSION = "5.1.89";
 
 static void PrintLogHeader()
 {

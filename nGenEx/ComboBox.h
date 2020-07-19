@@ -115,7 +115,7 @@ protected:
     bool           list_showing;
     bool           animated;
     bool           border;
-    int            seln;
+    int            selection;
     int            captured;
     int            bevel_width;
     int            button_state;
