@@ -172,13 +172,13 @@ DataLoader::DisableDatafile(const char* name)
 
 // +--------------------------------------------------------------------+
 
-void
-DataLoader::SetDataPath(const char* path)
+void DataLoader::SetDataPath(const char* path)
 {
-    if (path)
-    datapath = path;
-    else
-    datapath = "";
+    if (path) {
+        datapath = path;
+    } else {
+        datapath = "";
+    }
 }
 
 // +--------------------------------------------------------------------+

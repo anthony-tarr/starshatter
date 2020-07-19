@@ -747,8 +747,7 @@ Game::InitGame()
 
 // +--------------------------------------------------------------------+
 
-bool
-Game::InitContent()
+bool Game::InitContent()
 {
     DataLoader* loader = DataLoader::GetLoader();
     List<Text>  bundles;

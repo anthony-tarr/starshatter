@@ -85,7 +85,7 @@ static Mission*   current_mission      = 0;
 static double     time_til_change      = 0;
 static bool       exit_latch           = true;
 
-extern const char* versionInfo;
+extern const char* GAME_VERSION;
 
 // +--------------------------------------------------------------------+
 
@@ -441,7 +441,7 @@ StarServer::OnPaint()
     char buf[256];
 
     txt_title += " ";
-    txt_title += versionInfo;
+    txt_title += GAME_VERSION;
 
     switch (game_mode) {
     case LOAD_MODE:

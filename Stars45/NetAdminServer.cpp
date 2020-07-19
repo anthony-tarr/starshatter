@@ -54,7 +54,7 @@
 #include "FormatUtil.h"
 #include "MachineInfo.h"
 
-extern const char* versionInfo;
+extern const char* GAME_VERSION;
 
 // +-------------------------------------------------------------------+
 // +-------------------------------------------------------------------+
@@ -466,7 +466,7 @@ NetAdminServer::GetInstance(WORD port)
 NetAdminServer::NetAdminServer(WORD port)
 : HttpServletExec(port)
 {
-    http_server_name = Text("Starshatter NetAdminServer ") + versionInfo;
+    http_server_name = Text("Starshatter NetAdminServer ") + GAME_VERSION;
 }
 
 NetAdminServer::~NetAdminServer()
@@ -738,7 +738,7 @@ NetAdminServlet::GetTitleBar(const char* statline, const char* onload)
     }
 
     bar += "<span class=\"topbarbig\">Starshatter Server ";
-    bar += versionInfo;
+    bar += GAME_VERSION;
     bar += "</span>";
 
     if (statline) {

@@ -61,14 +61,14 @@ extern FILE* ErrLog;
 extern int   VD3D_describe_things;
 int          dump_missions = 0;
 
-const char*  versionInfo = "5.1.88 EX";
+const char* GAME_VERSION = "5.1.88 EX";
 
 static void PrintLogHeader()
 {
     Text sTime = FormatTimeString();
 
     Print("+====================================================================+\n");
-    Print("| STARSHATTER %-25s%29s |\n", versionInfo, sTime.data());
+    Print("| STARSHATTER %-25s%29s |\n", GAME_VERSION, sTime.data());
 
     Memory::SetLevel(Memory::MAXIMAL);
     Memory::OpenLog();

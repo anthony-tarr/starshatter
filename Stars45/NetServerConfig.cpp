@@ -55,7 +55,7 @@
 // +--------------------------------------------------------------------+
 
 NetServerConfig*     NetServerConfig::instance = 0;
-extern const char*   versionInfo;
+extern const char*   GAME_VERSION;
 
 // +--------------------------------------------------------------------+
 
@@ -74,7 +74,7 @@ NetServerConfig::NetServerConfig()
     poolsize          = 8;
     session_timeout   = 300;
 
-    name += versionInfo;
+    name += GAME_VERSION;
 
     Load();
 }

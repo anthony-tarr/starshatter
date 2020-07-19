@@ -54,7 +54,7 @@
 #include "NetLayer.h"
 #include "FormatUtil.h"
 
-extern const char* versionInfo;
+extern const char* GAME_VERSION;
 
 // +-------------------------------------------------------------------+
 
@@ -170,7 +170,7 @@ NetLobbyClient::Login(bool host_req)
     login += "\" pass \"";
     login += SafeQuotes(player->Password());
     login += "\" version \"";
-    login += versionInfo;
+    login += GAME_VERSION;
     login += "\" ";
 
     char buffer[256];

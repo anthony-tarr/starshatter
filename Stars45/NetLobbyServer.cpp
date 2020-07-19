@@ -68,7 +68,7 @@
 #include "Game.h"
 #include "FormatUtil.h"
 
-extern const char* versionInfo;
+extern const char* GAME_VERSION;
 
 // +-------------------------------------------------------------------+
 
@@ -78,7 +78,7 @@ NetLobbyServer::NetLobbyServer()
 : announce_time(0), server_config(0), motd_index(1)
 {
     status      = NetServerInfo::LOBBY;
-    server_name = Text("Starshatter NetLobbyServer ") + versionInfo;
+    server_name = Text("Starshatter NetLobbyServer ") + GAME_VERSION;
     start_time = NetLayer::GetUTC();
 
     selected_mission = 0;
@@ -870,7 +870,7 @@ NetLobbyServer::DoServerInfo(NetPeer* peer, Text s)
 
         sprintf_s(buffer, "info \"%s\" version \"%s\" mode %d users %d host %s port %d",
         MachineInfo::GetShortDescription(),
-        versionInfo,
+        GAME_VERSION,
         GetStatus(),
         NumUsers(),
         HasHost() ? "true" : "false",
@@ -976,7 +976,7 @@ NetLobbyServer::DoLogin(NetPeer* peer, Text msg)
     params.destroy();
 
     // first check the game version:
-    if (version != versionInfo) {
+    if (version != GAME_VERSION) {
         Print("NetLobbyServer - user '%s' tried to login with invalid game version '%s'\n",
         name.data(), version.data());
 

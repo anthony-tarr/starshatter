@@ -46,7 +46,7 @@
 
 #include "Game.h"
 
-extern const char* versionInfo;
+extern const char* GAME_VERSION;
 const char* HOSTNAME = "www.starshatter.com";
 const WORD  HTTPPORT = 80;
 
@@ -85,7 +85,7 @@ const char* password)
     msg += "&game=";
     msg += HttpRequest::EncodeParam(type);
     msg += "&vers=";
-    msg += HttpRequest::EncodeParam(versionInfo);
+    msg += HttpRequest::EncodeParam(GAME_VERSION);
     msg += "&port=";
     msg += buffer;
     msg += "&pass=";
@@ -140,7 +140,7 @@ NetBrokerClient::GameList(const char* type, List<NetServerInfo>& server_list)
     msg += "/GameNet/GameList.php?game=";
     msg += HttpRequest::EncodeParam(type);
     msg += "&vers=";
-    msg += HttpRequest::EncodeParam(versionInfo);
+    msg += HttpRequest::EncodeParam(GAME_VERSION);
     msg += " HTTP/1.1\n\n";
 
     HttpClient  client(broker);

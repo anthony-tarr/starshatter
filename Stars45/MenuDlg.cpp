@@ -69,7 +69,7 @@ DEF_MAP_CLIENT(MenuDlg, OnQuit);
 DEF_MAP_CLIENT(MenuDlg, OnButtonEnter);
 DEF_MAP_CLIENT(MenuDlg, OnButtonExit);
 
-extern const char* versionInfo;
+extern const char* GAME_VERSION;
 
 // +--------------------------------------------------------------------+
 
@@ -180,7 +180,7 @@ MenuDlg::RegisterControls()
     version     = FindControl(100);
 
     if (version) {
-        version->SetText(versionInfo);
+        version->SetText(GAME_VERSION);
     }
 
     description = FindControl(202);
