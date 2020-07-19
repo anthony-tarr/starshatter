@@ -260,8 +260,7 @@ Game::GUITime()
 
 // +--------------------------------------------------------------------+
 
-bool
-Game::Init(HINSTANCE hi, HINSTANCE hpi, LPSTR cmdline, int nCmdShow)
+bool Game::Init(HINSTANCE hi, HINSTANCE hpi, LPSTR cmdline, int nCmdShow)
 {
     status = OK;
     hInst  = hi;

@@ -59,7 +59,7 @@ ComboBox::ComboBox(ActiveWindow* p, int ax, int ay, int aw, int ah, DWORD aid)
     button_state   = 0;
     captured       = 0;
     pre_state      = 0;
-    seln           = 0;
+    selection           = 0;
     list           = 0;
     list_showing   = false;
     border         = true;
@@ -77,7 +77,7 @@ ComboBox::ComboBox(Screen* s, int ax, int ay, int aw, int ah, DWORD aid)
     button_state   = 0;
     captured       = 0;
     pre_state      = 0;
-    seln           = 0;
+    selection           = 0;
     list           = 0;
     list_showing   = false;
     border         = true;
@@ -331,7 +331,7 @@ void ComboBox::ShowList()
         list->SetTextAlign(text_align);
         list->SetFont(font);
         list->SetText(text);
-        list->SetSelection(seln);
+        list->SetSelection(selection);
         list->SetItems(items);
 
         list->Show();
@@ -368,7 +368,7 @@ void ComboBox::OnListSelect(AWEvent* event)
         int new_seln = list->GetSelectedIndex();
         
         if (new_seln >= 0 && new_seln < items.size())
-        seln = new_seln;
+        selection = new_seln;
 
         HideList();
         OnSelect();
@@ -392,7 +392,7 @@ int ComboBox::NumItems()
 void ComboBox::ClearItems()
 {
     items.destroy();
-    seln = 0;
+    selection = 0;
 }
 
 void ComboBox::AddItem(const char* item)
@@ -428,23 +428,24 @@ void ComboBox::SetLabel(const char* label)
     SetText(label);
 }
 
-int  ComboBox::GetCount()
+int ComboBox::GetCount()
 {
-    return items.size();
+	return items.size();
 }
 
 const char* ComboBox::GetSelectedItem()
 {
-    if (seln >= 0 && seln < items.size())
-    return items[seln]->data();
-    else
-    return 0;
+	if (selection >= 0 && selection < items.size()) {
+		return items[selection]->data();
+	} else {
+		return 0;
+	}
 }
 
 int ComboBox::GetSelectedIndex()
 {
-    if (seln >= 0 && seln < items.size()) {
-        return seln;
+    if (selection >= 0 && selection < items.size()) {
+        return selection;
     } else {
         return -1;
     }
@@ -452,8 +453,8 @@ int ComboBox::GetSelectedIndex()
 
 void ComboBox::SetSelection(int index)
 {
-    if (seln != index && index >= 0 && index < items.size()) {
-        seln = index;
+    if (selection != index && index >= 0 && index < items.size()) {
+        selection = index;
     }
 }
 

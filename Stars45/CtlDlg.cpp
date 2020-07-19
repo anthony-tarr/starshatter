@@ -97,8 +97,9 @@ CtlDlg::~CtlDlg()
 void
 CtlDlg::RegisterControls()
 {
-    if (apply)
-    return;
+    if (apply) {
+        return;
+    }
 
     for (int i = 0; i < 4; i++) {
         category[i] = (Button*) FindControl(101 + i);
@@ -363,8 +364,7 @@ CtlDlg::OnCommand(AWEvent* event)
 
 // +--------------------------------------------------------------------+
 
-void
-CtlDlg::OnControlModel(AWEvent* event)
+void CtlDlg::OnControlModel(AWEvent* event)
 {
     control_model = control_model_combo->GetSelectedIndex();
 }
@@ -376,26 +376,22 @@ void CtlDlg::OnJoySelect(AWEvent* event)
     joy_select = joy_select_combo -> GetSelectedIndex();
 }
 
-void
-CtlDlg::OnJoyThrottle(AWEvent* event)
+void CtlDlg::OnJoyThrottle(AWEvent* event)
 {
     joy_throttle = joy_throttle_combo->GetSelectedIndex();
 }
 
-void
-CtlDlg::OnJoyRudder(AWEvent* event)
+void CtlDlg::OnJoyRudder(AWEvent* event)
 {
     joy_rudder = joy_rudder_combo->GetSelectedIndex();
 }
 
-void
-CtlDlg::OnJoySensitivity(AWEvent* event)
+void CtlDlg::OnJoySensitivity(AWEvent* event)
 {
     joy_sensitivity = joy_sensitivity_slider->GetValue();
 }
 
-void
-CtlDlg::OnJoyAxis(AWEvent* event)
+void CtlDlg::OnJoyAxis(AWEvent* event)
 {
     if (manager)
     manager->ShowJoyDlg();
@@ -403,8 +399,7 @@ CtlDlg::OnJoyAxis(AWEvent* event)
 
 // +--------------------------------------------------------------------+
 
-void
-CtlDlg::OnMouseSelect(AWEvent* event)
+void CtlDlg::OnMouseSelect(AWEvent* event)
 {
     mouse_select = mouse_select_combo->GetSelectedIndex();
 }
