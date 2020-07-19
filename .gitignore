@@ -395,4 +395,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+## Starshatter specific stuff
+libpng/Release/*.lib
+zlib/Release/*.lib
 Stars45/errlog.txt
