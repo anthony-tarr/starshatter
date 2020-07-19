@@ -1,0 +1,437 @@
+SHIP
+
+name:          Carrier
+display_name:  Carrier
+class:         Carrier
+
+detail_0:   "Lo Detail.mag"
+feature_0:  1000
+detail_1:   "Hi Detail.mag"
+feature_1:  32
+
+mass:       517e3
+agility:    2
+vlimit:     220
+roll_rate:  7
+integrity:  75e3
+scale:      5
+acs:        1.5
+
+trans_x:      1e6
+trans_y:      5e5
+trans_z:      1e6
+
+drag:       1e-7
+roll_drag:  1.2
+pitch_drag: 1.2
+yaw_drag:   1.2
+
+chase:      (0, -1800, 170)
+bridge:     (0,   600, 100)
+
+power:      {
+   type:             Fusion,
+   design:           "Fusion Reactor",
+   max_output:       90e3,
+
+   loc:              (0, -48, -180),
+   size:             48,
+   hull_factor:      0.3,
+   explosion:        7
+   }
+
+drive:      {
+   type:             Plasma,
+   name:             "Plasma Drive",
+   design:           "Plasma Drive",
+   thrust:           40e3,
+   scale:            10,
+
+   // upper drive cluster
+   port:             (-38,  32, -512),
+   port:             (  0,  32, -524),
+   port:             ( 38,  32, -512),
+
+   // lower drive cluster
+   port:             (-38, -64, -512),
+   port:             (  0, -64, -524),
+   port:             ( 38, -64, -512),
+
+   loc:              (0, 48, -240),
+   size:             48,
+   hull_factor:      0.3,
+   explosion:        7
+   }
+
+thruster: {
+   design:           Thruster,
+
+   loc:              (0, 0, 128),
+   size:             24,
+   hull_factor:      0.3
+   }
+
+quantum:     {
+   design:           "Quantum Drive",
+   loc:              (0, 0, 0),
+   size:             24,
+   hull_factor:      0.3
+   }
+
+shield:     {
+   type:             2,
+   design:           "Grav Shield",
+   pcs:              100
+   }
+
+weapon:     {
+   type:             "XRay Laser",
+   design:           "Beam Weapon",
+   name:             "XRay Laser 1",
+   abrv:             "Laser-1",
+   muzzle:           (-128, -50, 360),
+
+   muzzle:           (-128, -50, 300),
+   size:             32,
+   hull_factor:      0.2,
+   explosion:        7
+   }
+
+weapon:     {
+   type:             "XRay Laser",
+   design:           "Beam Weapon",
+   name:             "XRay Laser 2",
+   abrv:             "Laser-2",
+   muzzle:           ( 128, -50, 360),
+
+   muzzle:           (-128, -50, 300),
+   size:             32,
+   hull_factor:      0.2,
+   explosion:        7
+   }
+
+weapon:     {
+   type:             "Phalanx Cannon",
+   design:           "Bolt Weapon",
+   name:             "Port/Fwd Phalanx",
+   abrv:             "Fwd PDB 1",
+   group:            "FWD PDB",
+   loc:              (-128, -30, 320),
+   muzzle:           (-3, 0, 4),
+   muzzle:           ( 3, 0, 4),
+
+   size:             32,
+   hull_factor:      0.2
+   }
+
+weapon:     {
+   type:             "Phalanx Cannon",
+   design:           "Bolt Weapon",
+   name:             "Stbd/Fwd Phalanx",
+   abrv:             "Fwd PDB 2",
+   group:            "FWD PDB",
+   loc:              ( 128, -30, 320),
+   muzzle:           (-3, 0, 4),
+   muzzle:           ( 3, 0, 4),
+
+   size:             32,
+   hull_factor:      0.2
+   }
+
+weapon:     {
+   type:             "Phalanx Cannon",
+   design:           "Bolt Weapon",
+   name:             "Port/Lat Phalanx",
+   abrv:             "LAT PDB 1",
+   group:            "LAT PDB",
+   loc:              (-143, -48, 256),
+   muzzle:           (-3, 0, 4),
+   muzzle:           ( 3, 0, 4),
+   azimuth:          -1.5708,
+
+   size:             32,
+   hull_factor:      0.2
+   }
+
+weapon:     {
+   type:             "Phalanx Cannon",
+   design:           "Bolt Weapon",
+   name:             "Stbd/Lat Phalanx",
+   abrv:             "LAT PDB 2",
+   group:            "LAT PDB",
+   loc:              ( 143, -48, 256),
+   muzzle:           (-3, 0, 4),
+   muzzle:           ( 3, 0, 4),
+   azimuth:          1.5708,
+
+   size:             32,
+   hull_factor:      0.2
+   }
+
+weapon:     {
+   type:             "Phalanx Cannon",
+   design:           "Bolt Weapon",
+   name:             "Port/Aft Phalanx",
+   abrv:             "Aft PDB 1",
+   group:            "AFT PDB",
+   loc:              (-50, 107, -212),
+   muzzle:           (-3, 0, 4),
+   muzzle:           ( 3, 0, 4),
+   azimuth:          3.1416,
+
+   size:             32,
+   hull_factor:      0.2
+   }
+
+weapon:     {
+   type:             "Phalanx Cannon",
+   design:           "Bolt Weapon",
+   name:             "Stbd/Aft Phalanx",
+   abrv:             "Aft PDB 2",
+   group:            "AFT PDB",
+   loc:              (50, 107, -212),
+   muzzle:           (-3, 0, 4),
+   muzzle:           ( 3, 0, 4),
+   azimuth:          3.1416,
+
+   size:             32,
+   hull_factor:      0.2
+   }
+
+
+flightdeck: {
+   name:       "Deck 1",
+   abrv:       "Deck 1",
+   loc:        ( 36, -8,  440),
+   cam:        (  0, -8,  440),
+   start:      ( 36, -12, 430),
+   end:        (1e3,  0, 2500),
+
+   spot:       { loc: ( 12, -12, 405), filter: 0x7 },
+   spot:       { loc: ( 60, -12, 405), filter: 0x7 },
+   spot:       { loc: ( 36, -12, 415), filter: 0x8 },
+
+   launch:     true,
+   max_ships:  2,
+   cycle_time: 15,
+
+   size:       28,
+   hull_factor: 0.5,
+   }
+
+flightdeck: {
+   name:       "Deck 2",
+   abrv:       "Deck 2",
+   loc:        (-36, -8,  440),
+   cam:        (  0, -8,  440),
+   start:      (-36, -12, 430),
+   end:        (1e3,  0, 2500),
+
+   spot:       { loc: (-12, -12, 405), filter: 0x7 },
+   spot:       { loc: (-60, -12, 405), filter: 0x7 },
+   spot:       { loc: (-36, -12, 415), filter: 0x8 },
+
+   launch:     true,
+   max_ships:  2,
+   cycle_time: 15,
+
+   size:       28,
+   hull_factor: 0.5,
+   }
+
+flightdeck: {
+   name:       "Deck 3",
+   abrv:       "Deck 3",
+   loc:        ( 192, -60,  -350),
+   cam:        ( 160, -40,  -300),
+   start:      ( 192, -57, -1350),
+   end:        ( 192, -57,  -350),
+
+   approach:   ( 200,  0, -2000),
+   approach:   (1000,  0, -1000),
+   approach:   (1000,  0,  1000),
+   approach:   ( 250,  0,  2500),
+
+   spot:       ( 192, -57, -350),
+
+   recovery:   true,
+   max_ships:  1,
+   cycle_time: 15,
+
+   size:       40,
+   hull_factor: 0.5,
+   }
+
+flightdeck: {
+   name:       "Deck 4",
+   abrv:       "Deck 4",
+   loc:        (-192, -60,  -350),
+   cam:        (-160, -40,  -300),
+   start:      (-192, -57, -1350),
+   end:        (-192, -57,  -350),
+
+   approach:   (-200,  0, -2000),
+   approach:   (-1000, 0, -1000),
+   approach:   (-1000, 0,  1000),
+   approach:   (-250,  0,  2500),
+
+   spot:       (-192, -57, -350),
+
+   recovery:   true,
+   max_ships:  1,
+   cycle_time: 15,
+
+   size:       40,
+   hull_factor: 0.5,
+   }
+
+
+power:      {
+   type:             "Auxilliary Reactor",
+   design:           "Auxilliary Reactor",
+   max_output:       10e3
+   }
+
+probe:     {
+   type:    "Sensor Drone",
+   abrv:    "Probe",
+   muzzle:  ( 0, -80, 0),
+
+   loc:     (0, -80, 0),
+   size:    16,
+   hull_factor: 0.2
+   }
+
+sensor:     {
+   design:              Sensor,
+   pcs:                 20,
+   active_efficiency:   1e6,
+   passive_efficiency:  10e3,
+   range:   25e3,
+   range:   50e3,
+   range:   75e3,
+   range:   100e3,
+
+   loc:              (0, -16, 380),
+   size:             16,
+   hull_factor:      0.1
+   }
+
+computer:   {
+   name:             "Avionics Package",
+   abrv:             "HUD",
+   type:             1,
+   design:           Computer,
+
+   loc:              (20, 16, 80),
+   size:             16,
+   hull_factor:      0.5
+   }
+
+computer:   {
+   name:             "Flight Computer",
+   abrv:             "Flight",
+   type:             2,
+   design:           Computer,
+
+   loc:              (-20, -16, 80),
+   size:             16,
+   hull_factor:      0.2
+   }
+
+nav:        {
+   loc:              (0, 16, 60),
+   design:           Computer,
+   size:             16,
+   hull_factor:      0.1
+   }
+
+power:      {
+   type:             Battery,
+   design:           Battery,
+   max_output:       10
+   }
+
+
+death_spiral: {
+   time:             5,
+
+   explosion_type:   10,   // SMALL_EXPLOSION
+   explosion_time:   2,
+   explosion_loc:    (-50, 50, 0),
+
+   explosion_type:   10,   // SMALL_EXPLOSION
+   explosion_time:   1,
+   explosion_loc:    (60, 40, 190),
+
+   explosion_type:   10,   // SMALL_EXPLOSION
+   explosion_time:   0.5,
+   explosion_loc:    (0, -48, -180),
+
+   explosion_type:   20,   // LARGE_BURST (custom)
+   explosion_time:   0.1,
+   explosion_loc:    (0, -48, -180),
+
+   explosion_type:   10,   // SMALL_EXPLOSION
+   explosion_time:   0.3,
+   explosion_loc:    (20, 80, -190),
+
+   explosion_type:   20,   // LARGE_BURST (custom)
+   explosion_time:   0.1,
+   explosion_loc:    (20, 80, -190),
+
+   final_type:       13,   // LARGE_EXPLOSION
+   final_loc:        (0, 0, 120),
+
+   final_type:       13,   // NUKE_EXPLOSION
+   final_loc:        (0, 0, -120),
+
+   final_type:       12,   // LARGE_BURST
+   final_loc:        (0, 0, 0),
+
+   debris:           "Debris1.mag",
+   debris_loc:       (0,0,350),
+   debris_mass:      100e3,
+   debris_count:     1,
+   debris_life:      600,
+   debris_fire:      (-100,0,0),
+   debris_fire:      (-35,20,-80),
+
+   debris:           "Debris2.mag",
+   debris_loc:       (-200,20,-300),
+   debris_mass:      100e3,
+   debris_count:     1,
+   debris_life:      500,
+   debris_fire:      (64,0,120),
+   debris_fire:      (85,20,0),
+   debris_fire:      (65,-10,-60),
+
+   debris:           "Debris3.mag",
+   debris_loc:       (300,0,-320),
+   debris_mass:      100e3,
+   debris_count:     1,
+   debris_life:      400,
+
+   debris:           "Debris5.mag",
+   debris_loc:       (0,20,0),
+   debris_mass:      1,
+   debris_count:     12,
+   debris_life:      25,
+
+   debris:           "Debris7.mag",
+   debris_loc:       (10,0,0),
+   debris_mass:      1,
+   debris_count:     7,
+   debris_life:      15,
+   }
+
+map: {
+   sprite: "map0.pcx",
+   sprite: "map1.pcx",
+   sprite: "map2.pcx",
+   sprite: "map3.pcx",
+   sprite: "map4.pcx",
+   sprite: "map5.pcx",
+   sprite: "map6.pcx",
+   sprite: "map7.pcx"
+}

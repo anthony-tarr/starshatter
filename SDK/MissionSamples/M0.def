@@ -1,0 +1,51 @@
+MISSION
+
+name:       "Generic Mission"
+
+// ENVIRONMENT *********************
+
+system:     Janus
+
+// FORCES **************************
+
+region:  "Janek"
+
+objective:
+         "Demonstration - test inclusion of mod ships in "
+         "the Starshatter game engine."
+
+sitrep:  "The star freighter Ecliptic has just taken on "
+         "cargo while in Janek orbit, and is about to "
+         "to go quantum on route to Alystra.  Enemy Vipers "
+         "are patrolling the region and may be armed with "
+         "antiship missiles capable of destroying the freighter. "
+         "Your element has been assigned to protect the "
+         "freighter until it is able to make the jump."
+
+start:   "01/09:10:00"
+
+
+ship: {
+   name:    Dagger,
+   design:  Stormhawk,
+   loc:     (5e3, 5e3, 1e3),
+   count:   2,
+   iff:     1,
+   player:  1,
+
+   loadout: { ship: -1, name: "ACM Short Range" },
+}
+
+ship: {
+   name:    Ecliptic,
+   design:  TypeIII,
+   loc:     (0, 0, 0),
+   count:   1,
+   iff:     1,
+
+   navpt:   { cmd: vector,  loc: (0, -100e3, 0), speed: 250 },
+   navpt:   { cmd: vector,  loc: (0,      0, 0), speed: 250, rgn: Alystra },
+   navpt:   { cmd: vector,  loc: (0,   20e3, 0), speed: 250, rgn: Alystra },
+}
+
+

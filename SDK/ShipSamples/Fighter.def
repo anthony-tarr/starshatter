@@ -1,0 +1,236 @@
+SHIP
+
+name:          Fighter
+display_name:  Mustang
+class:      Fighter
+abrv:       "P51"
+
+detail_0:   "LoDetail.mag"
+feature_0:  0.1
+detail_1:   "HiDetail.mag"
+feature_1:  0.4
+
+mass:       14.9
+integrity:  2e3
+vlimit:     290
+agility:    150
+air_factor: 0.25
+roll_rate:  1800
+scale:      0.25
+acs:        1.1
+detet:      50e3
+
+trans_x:    2000
+trans_y:    1500
+trans_z:    2000
+
+drag:       0.0035
+roll_drag:  10
+pitch_drag: 7.5
+yaw_drag:   7.5
+
+CL:         1e-2
+CD:         1.5e-5
+stall:      0.40
+
+prep_time:  15
+avoid_fighter: 7
+
+chase:      (0, -1200, 250)
+bridge:     (0,   132,  22)
+
+power:      {
+   type:    Fusion,
+   max_output: 60,
+   fuel_range: 0.5,
+   
+   loc:     (0, 0, -40),
+   size:    32,
+   hull_factor: 0.75
+   }
+
+drive:      {
+   type:    Plasma,
+   thrust:  17,
+   augmenter: 50,
+   scale:   0.45,
+   port:    (0, 0, -152),
+
+   loc:     (0, 0, -100),
+   size:    16,
+   hull_factor: 0.85
+   }
+
+
+weapon:     {
+   type:    "Delta Cannon",
+   abrv:    Cannon,
+   muzzle:  (-36, 6, 12),
+   muzzle:  ( 36, 6, 12),
+
+   loc:     (0, 0, -32),
+   size:    16,
+   hull_factor: 0.5
+   }
+
+hardpoint:     {
+   type:    "Javelin",
+   type:    "Vector",
+   type:    "Harpoon",
+   abrv:    "STA-1",
+   muzzle:  ( 72, -16, -80),
+
+   loc:     ( 72, -16, -80),
+   size:    16,
+   hull_factor: 0.2
+   }
+
+hardpoint:     {
+   type:    "Javelin",
+   type:    "Vector",
+   type:    "Harpoon",
+   type:    "Hammer",
+   abrv:    "STA-2",
+   muzzle:  ( 48, -16, -80),
+
+   loc:     ( 48, -16, -80),
+   size:    16,
+   hull_factor: 0.2
+   }
+
+hardpoint:     {
+   type:    "Javelin",
+   type:    "Vector",
+   type:    "Harpoon",
+   type:    "Hammer",
+   abrv:    "STA-3",
+   muzzle:  (-48, -16, -80),
+
+   loc:     (-48, -16, -80),
+   size:    16,
+   hull_factor: 0.2
+   }
+
+hardpoint:     {
+   type:    "Javelin",
+   type:    "Vector",
+   type:    "Harpoon",
+   abrv:    "STA-4",
+   muzzle:  (-72, -16, -80),
+
+   loc:     (-72, -16, -80),
+   size:    16,
+   hull_factor: 0.2
+   }
+
+decoy:     {
+   type:    "Fighter Decoy",
+   abrv:    Decoy,
+   muzzle:  ( 0, -32, 0),
+
+   loc:     (0, 0, 0),
+   size:    16,
+   hull_factor: 0.5
+   }
+
+sensor:     {
+   pcs:                 25,
+   active_efficiency:   2e9,
+   passive_efficiency:  500,
+   range:   25e3,
+   range:   50e3,
+   range:   75e3,
+
+   loc:     (0, 0, 100),
+   size:    25,
+   hull_factor: 0.25
+   }
+
+computer:   {
+   name:    "Avionics Package",
+   abrv:    HUD,
+   type:    1,
+
+   loc:     (20, 0, 80),
+   size:    8,
+   hull_factor: 0.2
+   }
+
+computer:   {
+   name:    "Flight Computer",
+   abrv:    Flight,
+   type:    2,
+
+   loc:     (-20, 0, 80),
+   size:    16,
+   hull_factor: 0.5
+   }
+
+gear: {
+   name:    "Undercarriage",
+   abrv:    Gear,
+   loc:     (0, 0, 0),
+   size:    16,
+   hull_factor: 0.5,
+
+   gear: {
+      model: "NoseGear.mag",
+      start: (0, -18, 80),
+      end:   (0, -43, 110)
+      },
+
+   gear: {
+      model: "LeftGear.mag",
+      start: (-20, -20, -54),
+      end:   (-40, -56, -50)
+      },
+
+   gear: {
+      model: "RightGear.mag",
+      start: ( 20, -20, -54),
+      end:   ( 40, -56, -50)
+      },
+   }
+
+nav:        {
+   loc:     (0, 0, 60),
+   size:    16,
+   hull_factor: 0.1
+   }
+
+loadout: { name: "Clean",            stations: (-1, -1, -1, -1) }
+loadout: { name: "ACM Light",        stations: (0, -1, -1, 0) }
+loadout: { name: "ACM Short Range",  stations: (0, 0, 0, 0) }
+loadout: { name: "ACM Medium Range", stations: (0, 1, 1, 0) }
+loadout: { name: "Ground Strike",    stations: (0, 3, 3, 0) }
+loadout: { name: "Ship Strike",      stations: (0, 2, 2, 0) }
+loadout: { name: "Hvy Ship Strike",  stations: (2, 2, 2, 2) }
+
+death_spiral: {
+   time:             2.5,
+
+   explosion_type:   10,   // SMALL_EXPLOSION
+   explosion_time:   1.1,
+   explosion_loc:    (0, 0, -64),
+
+   explosion_type:   10,   // SMALL_EXPLOSION
+   explosion_time:   1.5,
+   explosion_loc:    (20, 10, -20),
+
+   final_type:       11,   // LARGE_EXPLOSION
+   final_loc:        (0, 0, -32),
+
+   final_type:       12,   // LARGE_BURST
+   final_loc:        (0, 0, -32),
+   }
+
+map: {
+   sprite: "map0.pcx",
+   sprite: "map1.pcx",
+   sprite: "map2.pcx",
+   sprite: "map3.pcx",
+   sprite: "map4.pcx",
+   sprite: "map5.pcx",
+   sprite: "map6.pcx",
+   sprite: "map7.pcx"
+}

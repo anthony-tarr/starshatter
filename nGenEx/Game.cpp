@@ -753,12 +753,15 @@ Game::InitContent()
     DataLoader* loader = DataLoader::GetLoader();
     List<Text>  bundles;
 
+    // does this read from local files?
     loader->SetDataPath("Content/");
     loader->ListFiles("content*", bundles);
 
     ListIter<Text> iter = bundles;
     while (++iter) {
         Text* filename = iter.value();
+        Print(iter->data());
+
         int   n        = filename->indexOf('_');
 
         if (n > 0) {
@@ -774,8 +777,7 @@ Game::InitContent()
     return true;
 }
 
-void
-Game::UseLocale(Locale* locale)
+void Game::UseLocale(Locale* locale)
 {
     if (game) {
         DataLoader* loader = DataLoader::GetLoader();
